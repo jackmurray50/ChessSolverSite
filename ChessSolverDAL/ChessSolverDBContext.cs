@@ -1,10 +1,12 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-
+using System.Data.SqlClient;
 namespace ChessSolverDAL
 {
-    class ChessSolverDBContext : DbContext
+    class ChessSolverDBContext
     {
+        public ChessSolverDBContext()
+        {
+
+        }
     }
 }
