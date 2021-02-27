@@ -30,5 +30,20 @@ namespace chess_solver_site.Models
             }
             return selectedStudent.FirstOrDefault();
         }
+
+        public int Add(Boards newBoard)
+        {
+            try
+            {
+                repository.Add(newBoard);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Problem in " + GetType().Name + " " +
+                    MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                throw ex;
+            }
+            return newBoard.Id;
+        }//end of Add
     }
 }
