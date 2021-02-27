@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS [dbo].[Boards];
 --account to be unprotected), and how much they contributed in terms of calculated moves.
 CREATE TABLE [dbo].[Account]
 (
-	[Id] INT NOT NULL PRIMARY KEY,
+	[Id] INT IDENTITY (1,1) NOT NULL PRIMARY KEY,
 	[Password] CHAR(64), --Can be null, as a password won't be required.
 	[Name] VARCHAR(32) NOT NULL,
 	[Progress] BIGINT NOT NULL
@@ -19,7 +19,7 @@ CREATE TABLE [dbo].[Account]
 --All the registered board-states so far. Note: These don't care about 
 CREATE TABLE [dbo].[Boards]
 (
-	[Id] INT NOT NULL PRIMARY KEY,
+	[Id] INT IDENTITY (1,1) NOT NULL PRIMARY KEY,
 	[BoardState] NVARCHAR(64) NOT NULL,
 	--Will always be replaced with the lowest value
 	[TurnsSinceCapture] INT NOT NULL,

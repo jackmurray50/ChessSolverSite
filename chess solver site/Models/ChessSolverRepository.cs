@@ -40,7 +40,6 @@ namespace chess_solver_site.Models
             try
             {
                 ChessSolverEntity curEntity = GetByExpression(ent => ent.Id == updatedEntity.Id).FirstOrDefault();
-                _db.Entry(curEntity).OriginalValues["Timer"] = updatedEntity.Timer;
                 _db.Entry(curEntity).CurrentValues.SetValues(updatedEntity);
 
                 if (_db.SaveChanges() == 1)
