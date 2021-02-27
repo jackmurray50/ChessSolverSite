@@ -39,13 +39,17 @@ namespace chess_solver_site.Models
                 entity.Property(e => e.BoardState)
                     .HasMaxLength(64)
                     .IsUnicode(true);
-
+                entity.Property(e => e.Turn)
+                    .HasMaxLength(5);
             });
 
             modelBuilder.Entity<Accounts>(entity =>
             {
                 entity.Property(e => e.Name)
                     .HasMaxLength(32)
+                    .IsUnicode(false);
+                entity.Property(e => e.Password)
+                    .HasMaxLength(64)
                     .IsUnicode(false);
             });
         }

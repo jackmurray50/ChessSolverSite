@@ -12,4 +12,10 @@ namespace chess_solver_site.Models
         public string Turn { get; set; }
         public string WinState { get; set; }
     }
+
+    public class BoardsRelationships : ChessSolverEntity
+    {
+        public int ChildId { get; set; }
+        public int ParentId { get; set; }
+    }
 }
