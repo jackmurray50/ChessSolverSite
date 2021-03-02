@@ -45,5 +45,25 @@ namespace chess_solver_site.Models
             }
             return newBoard.Id;
         }//end of Add
+
+        public UpdateStatus Update(Boards newBoard)
+        {
+            UpdateStatus us = UpdateStatus.Failed;
+            try
+            {
+                us = repository.Update(newBoard);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
+            {
+                us = UpdateStatus.Stale;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Problem in " + GetType().Name + " " +
+                    MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                throw ex;
+            }
+            return us;
+        }
     }
 }

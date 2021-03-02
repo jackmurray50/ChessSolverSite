@@ -18,5 +18,16 @@ namespace ChessSolverSiteTests
 
             bm.Add(newBoard);
         }
+        [Fact]
+        public void Test_Update()
+        {
+            Boards newBoard = new Boards();
+            newBoard.BoardState = "Test";
+            newBoard.Turn = "WHITE";
+            newBoard.WinState = "TBD";
+            newBoard.TurnsSinceCapture = 0;
+
+            bm.Add(newBoard);
+        }
     }
 }
