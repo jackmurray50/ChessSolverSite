@@ -14,23 +14,6 @@ namespace chess_solver_site.Models
             repository = new ChessSolverRepository<Boards>();   
         }
 
-        public Boards GetById(int id)
-        {
-            List<Boards> selectedStudent = null;
-            try
-            {
-                selectedStudent = repository.GetByExpression(stu => stu.Id == id);
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Problem in " + GetType().Name + " " +
-                    MethodBase.GetCurrentMethod().Name + " " + ex.Message);
-                throw ex;
-            }
-            return selectedStudent.FirstOrDefault();
-        }
-
         public int Add(Boards newBoard)
         {
             try
@@ -98,7 +81,7 @@ namespace chess_solver_site.Models
             return selectedBoard.FirstOrDefault();
         }
 
-        public int DeleteBoard(int id)
+        public int Delete(int id)
         {
             int boardsDeleted = -1;
             try
