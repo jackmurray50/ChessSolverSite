@@ -65,5 +65,53 @@ namespace chess_solver_site.Models
             }
             return us;
         }
+
+        public Boards GetByID(int id)
+        {
+            List<Boards> selectedBoard = null;
+            try
+            {
+                selectedBoard = repository.GetByExpression(b => b.Id == id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Problem in " + GetType().Name + " " +
+                    MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                throw ex;
+            }
+            return selectedBoard.FirstOrDefault();
+        }
+
+        public Boards GetByBoardState(string state)
+        {
+            List<Boards> selectedBoard = null;
+            try
+            {
+                selectedBoard = repository.GetByExpression(b => b.BoardState == state);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Problem in " + GetType().Name + " " +
+                    MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                throw ex;
+            }
+            return selectedBoard.FirstOrDefault();
+        }
+
+        public int DeleteBoard(int id)
+        {
+            int boardsDeleted = -1;
+            try
+            {
+                boardsDeleted = repository.Delete(id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Problem in " + GetType().Name + " " +
+                    MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                throw ex;
+            }
+            return boardsDeleted;
+        }
     }
 }
