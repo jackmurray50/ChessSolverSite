@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace chess_solver_site.Models
 {
@@ -42,7 +43,9 @@ namespace chess_solver_site.Models
                 entity.Property(e => e.Turn)
                     .HasMaxLength(5);
             });
-
+            var converter = new ValueConverter<int, long>(
+                i => Convert.ToInt64(i),
+                l => Convert.ToInt32(l));
             modelBuilder.Entity<Accounts>(entity =>
             {
                 entity.Property(e => e.Name)
@@ -51,6 +54,8 @@ namespace chess_solver_site.Models
                 entity.Property(e => e.Password)
                     .HasMaxLength(64)
                     .IsUnicode(false);
+                entity.Property(e => e.Progress)
+                    .HasConversion(converter);
             });
         }
     

@@ -1,14 +1,14 @@
 ﻿--Ensure there's no current table
 USE ChessSolver;
 
-DROP TABLE IF EXISTS [dbo].[Account];
+DROP TABLE IF EXISTS [dbo].[Accounts];
 DROP TABLE IF EXISTS [dbo].[BoardsRelationships];
 DROP TABLE IF EXISTS [dbo].[Boards];
 
 
 --Table of accounts, keeping track of usernames, passwords (Which can be null if someone wants their
 --account to be unprotected), and how much they contributed in terms of calculated moves.
-CREATE TABLE [dbo].[Account]
+CREATE TABLE [dbo].[Accounts]
 (
 	[Id] INT IDENTITY (1,1) NOT NULL PRIMARY KEY,
 	[Password] CHAR(64), --Can be null, as a password won't be required.
