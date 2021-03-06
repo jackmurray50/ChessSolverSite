@@ -24,7 +24,7 @@ namespace chess_solver_site.Models
         {
             try
             {
-                Accounts acc = _model.GetAccountByID(Id);
+                Accounts acc = _model.GetByID(Id);
 
                 Id = acc.Id;
                 Password = acc.Password;
@@ -47,7 +47,7 @@ namespace chess_solver_site.Models
         {
             try
             {
-                Accounts acc = _model.GetAccountByName(Name);
+                Accounts acc = _model.GetByName(Name);
 
                 Id = acc.Id;
                 Password = acc.Password;

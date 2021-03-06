@@ -49,7 +49,7 @@ namespace chess_solver_site.Models
             return us;
         }
 
-        public Boards GetByID(int id)
+        public Boards GetById(int id)
         {
             List<Boards> selectedBoard = null;
             try

@@ -21,7 +21,7 @@ namespace ChessSolverSiteTests
         [Fact]
         public void Test_Update()
         {
-            Accounts acc = am.GetAccountByName("Jack");
+            Accounts acc = am.GetByName("Jack");
             acc.Progress++;
             am.Update(acc);
         }
@@ -35,12 +35,12 @@ namespace ChessSolverSiteTests
         [Fact]
         public void Test_GetById()
         {
-            am.GetAccountByID(1);
+            am.GetByID(1);
         }
         [Fact]
         public void Test_GetByName()
         {
-            am.GetAccountByName("Jack");
+            am.GetByName("Jack");
         }
     }
 }

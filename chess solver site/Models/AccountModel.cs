@@ -14,7 +14,7 @@ namespace chess_solver_site.Models
             repository = new ChessSolverRepository<Accounts>();
         }
 
-        public Accounts GetAccountByID(int id)
+        public Accounts GetByID(int id)
         {
             List<Accounts> selectedAccount = null;
             try
@@ -29,7 +29,7 @@ namespace chess_solver_site.Models
             }
             return selectedAccount.FirstOrDefault();
         }
-        public Accounts GetAccountByName(string name)
+        public Accounts GetByName(string name)
         {
             List<Accounts> selectedAccount = null;
             try

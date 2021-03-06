@@ -22,7 +22,7 @@ namespace ChessSolverSiteTests
         [Fact]
         public void Test_Update()
         {
-            Boards newBoard = bm.GetByID(1);
+            Boards newBoard = bm.GetById(1);
             newBoard.BoardState = "Updated";
 
             Assert.True(bm.Update(newBoard) == UpdateStatus.Ok);
@@ -31,7 +31,7 @@ namespace ChessSolverSiteTests
         [Fact]
         public void Test_GetByID()
         {
-            bm.GetByID(1);
+            bm.GetById(1);
         }
 
         [Fact]
