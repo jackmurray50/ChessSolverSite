@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using chess_solver_site.Models;
+using chess_solver_site;
 
 namespace ChessSolverSiteTests
 {
@@ -21,13 +22,27 @@ namespace ChessSolverSiteTests
         [Fact]
         public void Test_Update()
         {
-            Boards newBoard = new Boards();
-            newBoard.BoardState = "Test";
-            newBoard.Turn = "WHITE";
-            newBoard.WinState = "TBD";
-            newBoard.TurnsSinceCapture = 0;
+            Boards newBoard = bm.GetByID(1);
+            newBoard.BoardState = "Updated";
 
-            bm.Add(newBoard);
+            Assert.True(bm.Update(newBoard) == UpdateStatus.Ok);
+        }
+
+        [Fact]
+        public void Test_GetByID()
+        {
+            bm.GetByID(1);
+        }
+
+        [Fact]
+        public void Test_GetByBoardState()
+        {
+            bm.GetByBoardState("Updated");
+        }
+        [Fact]
+        public void Test_Delete()
+        {
+            Assert.True(bm.Delete(1) == 1);
         }
     }
 }
