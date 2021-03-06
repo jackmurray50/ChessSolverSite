@@ -20,7 +20,10 @@ namespace ChessSolverSiteTests
         [Fact]
         public void Test_GetById()
         {
-
+            BoardViewModel bm = new BoardViewModel();
+            bm.Id = 1;
+            bm.GetById();
+            Assert.True(bm.BoardState != null);
         }
     }
 }

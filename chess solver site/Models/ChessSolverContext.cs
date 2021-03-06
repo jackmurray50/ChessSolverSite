@@ -43,6 +43,12 @@ namespace chess_solver_site.Models
                 entity.Property(e => e.Turn)
                     .HasMaxLength(5);
             });
+
+            modelBuilder.Entity<BoardsRelationships>(entity =>
+            {
+
+            });
+
             var converter = new ValueConverter<int, long>(
                 i => Convert.ToInt64(i),
                 l => Convert.ToInt32(l));
