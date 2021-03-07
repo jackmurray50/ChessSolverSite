@@ -64,5 +64,10 @@ namespace chess_solver_site.Models
             _db.Set<T>().Remove(currentEntity);
             return _db.SaveChanges();
         }
+   
+        public int GetCount()
+        {
+            return _db.Set<T>().Count();
+        }
     }
 }

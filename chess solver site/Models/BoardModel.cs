@@ -7,12 +7,13 @@ namespace chess_solver_site.Models
 {
     public class BoardModel
     {
-        IRepository<Boards> repository;
+        ChessSolverRepository<Boards> repository;
 
         public BoardModel()
         {
             repository = new ChessSolverRepository<Boards>();   
         }
+
 
         public int Add(Boards newBoard)
         {

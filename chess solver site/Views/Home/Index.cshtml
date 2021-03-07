@@ -1,8 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    ViewData["Count"] = new ChessSolverRepository<Boards>().GetCount();
 }
 
 <div class="text-center">
     <h1 class="display-4">Chess Solver</h1>
     <p>Help beat <a href="https://en.wikipedia.org/wiki/Shannon_number">Shannon</a> by donating processor time!</p>
+    <p>Completed @ViewData["Count"] out of ~10<sup>43</sup> possible boards</p>
+
 </div>
