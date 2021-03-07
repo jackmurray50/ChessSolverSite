@@ -69,7 +69,36 @@ namespace chess_solver_site.Models
             {
                 Boards board = _model.GetUnwonBoard();
                 MapProperties(board);
-                
+
+            }
+            catch (NullReferenceException)
+            {
+                BoardState = "not found";
+            }
+            catch (Exception ex)
+            {
+                BoardState = "not found";
+                Console.WriteLine("Problem in " + GetType().Name + " " + MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                throw ex;
+            }
+        }
+        
+        public void GetUnverifiedBranch()
+        {
+            try
+            {
+                Boards board = _model.GetBoardByVerificationAmount(3);
+                MapProperties(board);
+            }
+            catch (NullReferenceException)
+            {
+                BoardState = "not found";
+            }
+            catch (Exception ex)
+            {
+                BoardState = "not found";
+                Console.WriteLine("Problem in " + GetType().Name + " " + MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                throw ex;
             }
         }
         public void Add()

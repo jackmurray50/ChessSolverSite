@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -26,19 +24,21 @@ namespace chess_solver_site.Controllers
         /// Gets a leaf of the gametree. 
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("GetLeaf")]
         public ActionResult GetLeaf()
         {
             //1. Ask the DB to supply a random leaf
             try
             {
                 BoardViewModel vm = new BoardViewModel();
-                vm.G
-                vm.WinState = "TBD";
+                vm.GetLeaf();
+                return Ok(vm);
             }
             catch (Exception ex)
             {
-
+                _logger.LogError("Problem in " + GetType().Name + " " +
+                    MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
         /// <summary>
@@ -46,10 +46,37 @@ namespace chess_solver_site.Controllers
         /// </summary>
         /// <returns></returns>
 
-        [HttpGet]
+        [HttpGet("GetUnverifiedBranch")]
         public ActionResult GetUnverifiedBranch()
         {
-
+            try
+            {
+                BoardViewModel vm = new BoardViewModel();
+                vm.GetUnverifiedBranch();
+                return Ok(vm);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Problem in " + GetType().Name + " " +
+                    MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+    
+        [HttpPost]
+        public ActionResult Put(BoardViewModel board)
+        {
+            try
+            {
+                board.Add();
+                return Ok("Board added with Id " + board.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Problem in " + GetType().Name + " " +
+                    MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }
