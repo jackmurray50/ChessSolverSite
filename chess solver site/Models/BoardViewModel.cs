@@ -15,6 +15,7 @@ namespace chess_solver_site.Models
         public int TurnsSinceCapture { get; set; }
         public string Turn { get; set; }
         public string WinState { get; set; }
+        public int VerificationAmount { get; set; }
 
         public BoardViewModel()
         {
@@ -28,11 +29,7 @@ namespace chess_solver_site.Models
             {
                 Boards board = _model.GetById(Id);
 
-                Id = board.Id;
-                BoardState = board.BoardState;
-                Turn = board.Turn;
-                TurnsSinceCapture = board.TurnsSinceCapture;
-                WinState = board.WinState;
+                MapProperties(board);
             }
             catch (NullReferenceException)
             {
@@ -52,11 +49,7 @@ namespace chess_solver_site.Models
             {
                 Boards board = _model.GetByBoardState(BoardState);
 
-                Id = board.Id;
-                BoardState = board.BoardState;
-                Turn = board.Turn;
-                TurnsSinceCapture = board.TurnsSinceCapture;
-                WinState = board.WinState;
+                MapProperties(board);
             }
             catch (NullReferenceException)
             {
@@ -70,6 +63,15 @@ namespace chess_solver_site.Models
             }
         }
     
+        public void GetLeaf()
+        {
+            try
+            {
+                Boards board = _model.GetUnwonBoard();
+                MapProperties(board);
+                
+            }
+        }
         public void Add()
         {
             try
@@ -124,6 +126,16 @@ namespace chess_solver_site.Models
                 throw ex;
             }
             return boardDeleted;
+        }
+    
+        private void MapProperties(Boards board)
+        {
+            Id = board.Id;
+            BoardState = board.BoardState;
+            Turn = board.Turn;
+            TurnsSinceCapture = board.TurnsSinceCapture;
+            WinState = board.WinState;
+            VerificationAmount = board.VerificationAmount;
         }
     }
 }

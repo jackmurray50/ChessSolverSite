@@ -81,6 +81,37 @@ namespace chess_solver_site.Models
             return selectedBoard.FirstOrDefault();
         }
 
+        public Boards GetUnwonBoard()
+        {
+            List<Boards> selectedBoard = null;
+            try
+            {
+                selectedBoard = repository.GetByExpression(b => b.WinState == "TBD");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Problem in " + GetType().Name + " " +
+                    MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                throw ex;
+            }
+            return selectedBoard.FirstOrDefault();
+        }
+
+        public Boards GetBoardByVerificationAmount(int amt)
+        {
+            List<Boards> selectedBoard = null;
+            try
+            {
+                selectedBoard = repository.GetByExpression(b => b.VerificationAmount < amt);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Problem in " + GetType().Name + " " +
+                    MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                throw ex;
+            }
+            return selectedBoard.FirstOrDefault();
+        }
         public int Delete(int id)
         {
             int boardsDeleted = -1;

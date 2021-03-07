@@ -16,7 +16,7 @@ CREATE TABLE [dbo].[Accounts]
 	[Progress] BIGINT NOT NULL
 )
 
---All the registered board-states so far. Note: These don't care about 
+--All the registered board-states so far.
 CREATE TABLE [dbo].[Boards]
 (
 	[Id] INT IDENTITY (1,1) NOT NULL PRIMARY KEY,
@@ -25,7 +25,8 @@ CREATE TABLE [dbo].[Boards]
 	[TurnsSinceCapture] INT NOT NULL,
 	[Turn] VARCHAR(5) NOT NULL CHECK ([Turn] in('WHITE', 'BLACK')),
 	--caching win-state so lookup is faster
-	[WinState] VARCHAR(5) NOT NULL CHECK ([WinState] in ('WHITE', 'BLACK', 'DRAW', 'TBD')) DEFAULT ('TBD')
+	[WinState] VARCHAR(5) NOT NULL CHECK ([WinState] in ('WHITE', 'BLACK', 'DRAW', 'TBD')) DEFAULT ('TBD'),
+	[VerificationAmount] INT
 )
 
 --Relationships between boards; its a many-to-many relationship (A parent can have many children, a child can have many children)
