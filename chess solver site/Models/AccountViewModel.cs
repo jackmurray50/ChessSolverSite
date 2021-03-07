@@ -10,10 +10,10 @@ namespace chess_solver_site.Models
     {
         private AccountModel _model;
 
-        public int Id;
-        public string Password;
-        public string Name;
-        public int Progress;
+        public int Id { get; set; }
+        public string Password { get; set; }
+        public string Name { get; set; }
+        public int Progress { get; set; }
 
         public AccountViewModel()
         {

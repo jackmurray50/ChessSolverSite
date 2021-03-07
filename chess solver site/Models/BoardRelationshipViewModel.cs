@@ -9,9 +9,9 @@ namespace chess_solver_site.Models
     {
         private BoardRelationshipModel _model;
 
-        public int Id;
-        public int ChildId;
-        public int ParentId;
+        public int Id { get; set; }
+        public int ChildId { get; set; }
+        public int ParentId { get; set; }
 
         public BoardRelationshipViewModel()
         {

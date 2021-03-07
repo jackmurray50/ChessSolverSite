@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using chess_solver_site.Models;
 using System.Text.Json;
+using System.Diagnostics;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,9 +21,8 @@ namespace chess_solver_site.Controllers
             _logger = logger;
         }
 
-        // GET: api/<AccountController>/{id}
+        // GET: api/<AccountController>/id/{id}
         [HttpGet("id/{id}")]
-        [Produces("application/json")]
         public IActionResult GetById(int id)
         {
             try

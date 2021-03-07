@@ -10,11 +10,11 @@ namespace chess_solver_site.Models
     {
         private BoardModel _model;
 
-        public int Id;
-        public string BoardState;
-        public int TurnsSinceCapture;
-        public string Turn;
-        public string WinState;
+        public int Id { get; set; }
+        public string BoardState { get; set; }
+        public int TurnsSinceCapture { get; set; }
+        public string Turn { get; set; }
+        public string WinState { get; set; }
 
         public BoardViewModel()
         {
