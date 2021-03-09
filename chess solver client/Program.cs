@@ -30,9 +30,12 @@ namespace chess_solver_client
             //Step 4: Find the possible moves for the current board state and add them to a stack
             //Stack <move> =  new Stack<move>();
 
-
         }
 
+        /// <summary>
+        /// Gets a board from the Chess Solver Server.
+        /// </summary>
+        /// <returns></returns>
         static async Task GetBoard()
         {
             if (IsVerbose)
@@ -63,6 +66,10 @@ namespace chess_solver_client
             }
         }
 
+        /// <summary>
+        /// Sets the various input flags
+        /// </summary>
+        /// <param name="args">A list of the input flags</param>
         static void SetArgs(List<string> args)
         {
             //-v: Verbose
