@@ -16,8 +16,8 @@ namespace chess_solver_client
         static private string username;
         static private string password;
 
-        static string ConnectionString = "https://localhost:44394/";
-        static string GetLeafString = "api/board/GetLeaf";
+        static readonly string  ConnectionString = "https://localhost:44394/";
+        static readonly string GetLeafString = "api/board/GetLeaf";
         static async Task Main(string[] args)
         {
             //Step 1: See if there's any args we care about
