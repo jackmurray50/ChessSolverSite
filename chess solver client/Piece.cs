@@ -105,8 +105,41 @@ namespace chess_solver_client
                 }
             } 
 
-            //Attacks. Forward 1 space, up/down 1
-            
+            //Attacks. Forward 1 space, left/right 1
+            //Check that forward 1 + left one is valid
+            if(ValidatePosition((x+1, y + (1 * compass)))){
+                //Check that the space is taken
+                if(!(Board[x+1][y+(1*compass)] is null))
+                {
+                    //Check that the piece is of a different colour
+                    if(Board[x+1][y+(1*compass)].Colour != Colour)
+                    {
+                        //Add the value
+                        output.Add(new Move(
+                            (x+1, y+(1*compass)),
+                            (x,y),
+                            Board.Id
+                            ));
+                    }
+                }
+            }            
+            //Check that forward 1 + right one is valid
+            if(ValidatePosition((x-1, y + (1 * compass)))){
+                //Check that the space is taken
+                if(!(Board[x-1][y+(1*compass)] is null))
+                {
+                    //Check that the piece is of a different colour
+                    if(Board[x-1][y+(1*compass)].Colour != Colour)
+                    {
+                        //Add the value
+                        output.Add(new Move(
+                            (x-1, y+(1*compass)),
+                            (x,y),
+                            Board.Id
+                            ));
+                    }
+                }
+            }
 
             return output;
         }
