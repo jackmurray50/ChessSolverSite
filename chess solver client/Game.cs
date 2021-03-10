@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace chess_solver_client
 {
@@ -27,6 +28,33 @@ namespace chess_solver_client
         //Used to track the 50-turn rule
         public int TurnsSinceCapture { get; set; }
     
+        public ChessBoard(int id, List<Piece> pieces)
+        {
+            Id = id;
+            Pieces = pieces;
+            Turn = Colour.WHITE;
+            Board = new List<List<Piece>>();
+
+            //Set the board to null
+            for(int x = 0; x < 8; x++)
+            {
+                Board.Add(new List<Piece>());
+                for(int y = 0; y < 8; y++)
+                {
+                    Board[x].Add(null);
+                }
+            }
+
+            foreach(Piece p in Pieces)
+            {
+                int x = p.Position.Item1;
+                int y = p.Position.Item2;
+
+                p.Board = this;
+
+                Board[x][y] = p;
+            }
+        }
         /// <summary>
         /// Move a piece
         /// </summary>
@@ -48,7 +76,7 @@ namespace chess_solver_client
             {
                 //2.1 If there is, check if its a king. 
                 //Again, no verification; we're assuming it happens earlier.
-                if(RemovedPiece.Type == PieceType.KING)
+                if(RemovedPiece is King)
                 {
                     ToReturn = (int)Turn;
                 }
@@ -68,6 +96,12 @@ namespace chess_solver_client
             //Step 7: Return the value
             return ToReturn;
         }
+    
+        public List<Piece> this[int key]
+        {
+            get => Board[key];
+            set => Board[key] = value;
+        }
     }
     
     public class Move
@@ -75,20 +109,12 @@ namespace chess_solver_client
         public (int, int) To { get; set; }
         public (int, int) From { get; set; }
         public int BoardId { get; set; }
-    }
-    /// <summary>
-    /// The piece type, used to determine its moveset. Note that the Knight is called Hussar
-    /// to make sure that each piece has an individual first initial. If it was Knight, it would
-    /// conflict with King
-    /// </summary>
-    public enum PieceType
-    {
-        PAWN,
-        ROOK,
-        HUSSAR,
-        BISHOP,
-        QUEEN,
-        KING
+        public Move((int, int) to, (int,int) from, int boardId)
+        {
+            To = to;
+            From = from;
+            BoardId = boardId;
+        }
     }
     public enum Colour : int
     {
