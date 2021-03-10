@@ -32,6 +32,32 @@ namespace chess_solver_client
 
         }
 
+        static void DisplayBoard(ChessBoard board, Move move)
+        {
+            string output = board.ToString(move);
+            foreach (char c in output)
+            {
+                //the string is formatted so the place the piece came from is
+                //in red, and the place its going is in green
+                if (c == '[')
+                {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                }
+                else if (c == ']' || c == '}')
+                {
+                    Console.BackgroundColor = ConsoleColor.Black;
+                }
+                else if (c == '{')
+                {
+                    Console.BackgroundColor = ConsoleColor.Green;
+                }
+                else
+                {
+                    Console.Write(c);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets a board from the Chess Solver Server.
         /// </summary>

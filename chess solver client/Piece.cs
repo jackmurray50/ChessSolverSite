@@ -15,6 +15,7 @@ namespace chess_solver_client
         }
         public ChessBoard Board { get; set; }
         public Colour Colour { get; set; }
+        public char ConsoleGraphic { get; set; }
 
         public (int, int) Position { get; set; }
 
@@ -51,7 +52,14 @@ namespace chess_solver_client
         public Pawn((int, int) position, Colour colour)
             : base(position, colour)
         {
-
+            if (colour == Colour.BLACK)
+            {
+                ConsoleGraphic = 'P';
+            }
+            else
+            {
+                ConsoleGraphic = 'p';
+            }
         }
 
         //Pawns have a few moves, but they're complicated:
@@ -108,7 +116,14 @@ namespace chess_solver_client
         public Rook((int, int) position, Colour colour)
             : base(position, colour)
         {
-
+            if (colour == Colour.BLACK)
+            {
+                ConsoleGraphic = 'R';
+            }
+            else
+            {
+                ConsoleGraphic = 'r';
+            }
         }
         public override List<Move> PossibleMoves()
         {
@@ -122,7 +137,14 @@ namespace chess_solver_client
         public Hussar((int, int) position, Colour colour)
             : base(position, colour)
         {
-
+            if (colour == Colour.BLACK)
+            {
+                ConsoleGraphic = 'H';
+            }
+            else
+            {
+                ConsoleGraphic = 'h';
+            }
         }
         public override List<Move> PossibleMoves()
         {
@@ -136,7 +158,14 @@ namespace chess_solver_client
         public Bishop((int, int) position, Colour colour)
             : base(position, colour)
         {
-
+            if (colour == Colour.BLACK)
+            {
+                ConsoleGraphic = 'B';
+            }
+            else
+            {
+                ConsoleGraphic = 'b';
+            }
         }
         public override List<Move> PossibleMoves()
         {
@@ -150,7 +179,14 @@ namespace chess_solver_client
         public Queen((int, int) position, Colour colour)
             : base(position, colour)
         {
-
+            if (colour == Colour.BLACK)
+            {
+                ConsoleGraphic = 'Q';
+            }
+            else
+            {
+                ConsoleGraphic = 'q';
+            }
         }
         public override List<Move> PossibleMoves()
         {
@@ -163,8 +199,15 @@ namespace chess_solver_client
     {
         public King((int, int) position, Colour colour)
             : base(position, colour)
-        { 
-
+        {
+            if (colour == Colour.BLACK)
+            {
+                ConsoleGraphic = 'K';
+            }
+            else
+            {
+                ConsoleGraphic = 'k';
+            }
         }
         public override List<Move> PossibleMoves()
         {

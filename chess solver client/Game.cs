@@ -96,7 +96,43 @@ namespace chess_solver_client
             //Step 7: Return the value
             return ToReturn;
         }
-    
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+        public string ToString(Move move)
+        {
+            string output = "  12345678\n-----------";
+            for (int x = 0; x < Board.Count; x++)
+            {
+                output += "\n" + (char)(x + 65) + "|";
+                for (int y = 0; y < Board[x].Count; y++)
+                {
+                    //No piece
+                    if (!(Board[x][y] is null))
+                    {
+                        output += Board[x][y].ConsoleGraphic;
+                    }
+                    else
+                    {
+                        //Figure out if a square is white or black
+                        if ((x + y) % 2 == 0)
+                        {
+                            output += 'X';
+                        }
+                        else
+                        {
+                            output += '#';
+                        }
+                    }
+                }
+                output += "|";
+            }
+            output += "\n-----------\n";
+            return output;
+        }
+
         public List<Piece> this[int key]
         {
             get => Board[key];
