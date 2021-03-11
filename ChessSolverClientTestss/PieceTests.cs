@@ -51,5 +51,28 @@ namespace ChessSolverClientTestss
             Assert.True(ForwardsMatches == 1 && ForwardsTwoMatches == 1 && AttackRight == 1 && AttackLeft == 0);
 
         }
+    
+    
+        [Fact]
+        public void Test_HussarPossibleMoves()
+        {
+            Hussar Hussar = new Hussar((4, 4), Colour.BLACK);
+            Pawn ToLive = new Pawn((6, 5), Colour.BLACK);
+            Pawn ToDie = new Pawn((2, 3), Colour.WHITE);
+            ChessBoard board = new ChessBoard(0, new List<Piece>() {Hussar,
+                ToDie, ToLive
+            });
+
+            List<Move> moves = Hussar.PossibleMoves();
+            foreach (var m in moves)
+            {
+                output.WriteLine(m.To + ", " + m.From);
+            }
+            //Check that there's at least one good move.
+            //Will manually check the other moves for now, but automatic testing is
+            //on the todo list.
+            Assert.True(moves.Count() > 0);
+
+        }
     }
 }
