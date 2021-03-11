@@ -275,8 +275,39 @@ namespace chess_solver_client
         }
         public override List<Move> PossibleMoves()
         {
+            int x = Position.Item1;
+            int y = Position.Item2;
             List<Move> output = new List<Move>();
+            //The possible vectors the Rook can take
+            List<(int, int)> vectors = new List<(int, int)>()
+            {
+                (1,1),
+                (1,0),
+                (1,-1),
+                (-1,1),
+                (-1,0),
+                (-1,1),
+                (0,1),
+                (0,-1)
+            };
 
+            foreach (var v in vectors)
+            {
+                //Check that each position is within the board
+                if (ValidatePosition((x + v.Item1, y + v.Item2)))
+                {
+                    //Check that the position consiste of either an empty space or
+                    //an enemy piece
+                    if (Board[x + v.Item1][y + v.Item2] is null)
+                    {
+                        output.Add(new Move((x + v.Item1, y + v.Item2), (x, y), Board.Id));
+                    }
+                    else if (Board[x + v.Item1][y + v.Item2].Colour != Colour)
+                    {
+                        output.Add(new Move((x + v.Item1, y + v.Item2), (x, y), Board.Id));
+                    }
+                }
+            }
             return output;
         }
     }

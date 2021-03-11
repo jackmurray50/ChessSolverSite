@@ -71,8 +71,29 @@ namespace ChessSolverClientTestss
             //Check that there's at least one good move.
             //Will manually check the other moves for now, but automatic testing is
             //on the todo list.
-            Assert.True(moves.Count() > 0);
+            Assert.True(moves.Count() == 7);
 
+        }
+    
+        [Fact]
+        public void Test_KingPossibleMoves()
+        {
+            King King = new King((4, 4), Colour.BLACK);
+            Pawn ToLive = new Pawn((4, 5), Colour.BLACK);
+            Pawn ToDie = new Pawn((3, 3), Colour.WHITE);
+            ChessBoard board = new ChessBoard(0, new List<Piece>() {King,
+                ToDie, ToLive
+            });
+
+            List<Move> moves = King.PossibleMoves();
+            foreach (var m in moves)
+            {
+                output.WriteLine(m.To + ", " + m.From);
+            }
+            //Check that there's at least one good move.
+            //Will manually check the other moves for now, but automatic testing is
+            //on the todo list.
+            Assert.True(moves.Count() == 7);
         }
     }
 }
