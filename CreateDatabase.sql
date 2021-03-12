@@ -20,7 +20,7 @@ CREATE TABLE [dbo].[Accounts]
 CREATE TABLE [dbo].[Boards]
 (
 	[Id] INT IDENTITY (1,1) NOT NULL PRIMARY KEY,
-	[BoardState] NVARCHAR(64) NOT NULL,
+	[BoardState] NVARCHAR(72) NOT NULL,
 	--Will always be replaced with the lowest value
 	[TurnsSinceCapture] INT NOT NULL,
 	[Turn] VARCHAR(5) NOT NULL CHECK ([Turn] in('WHITE', 'BLACK')),
