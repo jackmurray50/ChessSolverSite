@@ -20,14 +20,8 @@ namespace ChessSolverClientTests
         [Fact]
         public void Test_ImportConstructor()
         {
-            ChessBoard Board = new ChessBoard(0, "RHBQKBHR\n" +
-                                                    "PPPPPPPP\n" +
-                                                    "X#X#X#X#\n" +
-                                                    "#X#X#X#X\n" +
-                                                    "X#X#X#X#\n" +
-                                                    "#X#X#X#X\n" +
-                                                    "pppppppp\n" +
-                                                    "rhbqkbhr", 0, "BLACK");
+            ChessBoard Board = new ChessBoard(0, "RHBQKBHR\nPPPPPPPP\nX#X#X#X#\nX#X#X#X#\nX#X#X#X#\nX#X#X#X#\npppppppp\nrhbqkbhr",
+                                             0, "BLACK");
             output.WriteLine(Board.UglyToString());
         }
 
