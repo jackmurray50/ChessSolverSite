@@ -93,7 +93,17 @@ namespace chess_solver_client
             Board[m.From.Item1][m.From.Item2] = null;
             //Step 6: Increment TurnSinceCapture
             TurnsSinceCapture++;
-            //Step 7: Return the value
+            //Step 7: Change turn
+            if(Turn == Colour.BLACK)
+            {
+                Turn = Colour.WHITE;
+            }
+            else
+            {
+                Turn = Colour.BLACK;
+            }
+
+            //Step 8: Return the value
             return ToReturn;
         }
 
