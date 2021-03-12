@@ -28,6 +28,91 @@ namespace chess_solver_client
         //Used to track the 50-turn rule
         public int TurnsSinceCapture { get; set; }
     
+        public ChessBoard(int id, string boardState, int turnsSinceCapture, string turn)
+        {
+            Id = id;
+            this.TurnsSinceCapture = turnsSinceCapture;
+            if(turn == "WHITE")
+            {
+                Turn = Colour.WHITE;
+            }
+            else
+            {
+                Turn = Colour.BLACK;
+            }
+            //Set the board to null
+            Board = new List<List<Piece>>();
+            for (int i = 0; i < 8; i++)
+            {
+                Board.Add(new List<Piece>());
+                for (int j = 0; j < 8; j++)
+                {
+                    Board[i].Add(null);
+                }
+            }
+            int x = 0;
+            int y = 0;
+            List<Piece> toAdd = new List<Piece>();
+            foreach(char c in boardState)
+            {
+                switch (c)
+                {
+                    case 'R':
+                        toAdd.Add(new Rook((x, y), Colour.BLACK));
+                        break;
+                    case 'r':
+                        toAdd.Add(new Rook((x, y), Colour.WHITE));
+                        break;
+                    case 'B':
+                        toAdd.Add(new Bishop((x, y), Colour.BLACK));
+                        break;
+                    case 'b':
+                        toAdd.Add(new Bishop((x, y), Colour.WHITE));
+                        break;
+                    case 'H':
+                        toAdd.Add(new Hussar((x, y), Colour.BLACK));
+                        break;
+                    case 'h':
+                        toAdd.Add(new Hussar((x, y), Colour.WHITE));
+                        break;
+                    case 'K':
+                        toAdd.Add(new King((x, y), Colour.BLACK));
+                        break;
+                    case 'k':
+                        toAdd.Add(new King((x, y), Colour.WHITE));
+                        break;
+                    case 'Q':
+                        toAdd.Add(new Queen((x, y), Colour.BLACK));
+                        break;
+                    case 'q':
+                        toAdd.Add(new Queen((x,y), Colour.WHITE));
+                        break;
+                    case 'P':
+                        toAdd.Add(new Pawn((x, y), Colour.BLACK));
+                        break;
+                    case 'p':
+                        toAdd.Add(new Pawn((x, y), Colour.WHITE));
+                        break;
+                    case '\n':
+                        x++;
+                        y = -1;
+                        break;
+                }
+                y++;
+            }
+            Pieces = toAdd;
+            foreach (Piece p in Pieces)
+            {
+                p.Board = this;
+
+                Board[p.Position.Item1][p.Position.Item2] = p;
+            }
+        }
+        /// <summary>
+        /// Constructor meant mostly for testing, makes for an easy-to-produce chessboard
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pieces"></param>
         public ChessBoard(int id, List<Piece> pieces)
         {
             Id = id;
@@ -107,11 +192,22 @@ namespace chess_solver_client
             return ToReturn;
         }
 
-        public override string ToString()
+        public List<Move> PossibleMoves()
         {
-            return base.ToString();
+            List < Move > output = new List<Move>();
+            foreach(Piece p in Pieces)
+            {
+                if(p.Colour == Turn)
+                {
+                    output.AddRange(p.PossibleMoves());
+
+                }
+            }
+
+            return output;
         }
-        public string ToString(Move move)
+
+        public override string ToString()
         {
             string output = "  12345678\n-----------";
             for (int x = 0; x < Board.Count; x++)
@@ -140,6 +236,35 @@ namespace chess_solver_client
                 output += "|";
             }
             output += "\n-----------\n";
+            return output;
+        }
+        public string UglyToString()
+        {
+            string output = "";
+            for (int x = 0; x < Board.Count; x++)
+            {
+                output += "\n";
+                for (int y = 0; y < Board[x].Count; y++)
+                {
+                    //No piece
+                    if (!(Board[x][y] is null))
+                    {
+                        output += Board[x][y].ConsoleGraphic;
+                    }
+                    else
+                    {
+                        //Figure out if a square is white or black
+                        if ((x + y) % 2 == 0)
+                        {
+                            output += 'X';
+                        }
+                        else
+                        {
+                            output += '#';
+                        }
+                    }
+                }
+            }
             return output;
         }
 

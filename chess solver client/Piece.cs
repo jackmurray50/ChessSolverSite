@@ -126,59 +126,60 @@ namespace chess_solver_client
             List<Move> output = new List<Move>();
             //Forwards 1 or 2 space
             //Check that what we're about to test stays inside the board
-            if (ValidatePosition((x, y+(1*compass))))
+            if (ValidatePosition((x+(1*compass), y)))
             {
-                if (Board[x][y + (1 * compass)] is null)
+                if (Board[x + (1 * compass)][y] is null)
                 {
-                    output.Add(new Move((x, y + (1 * compass)), (x, y), Board.Id));
+                    output.Add(new Move((x+ (1 * compass), y ), (x, y), Board.Id));
                     //Fowards 2 spaces
-                    if(ValidatePosition((x, y+(2*compass))))
+                    if(ValidatePosition((x+(2*compass), y)))
                     {
-                        if (Board[x][y + (2 * compass)] is null &&
-                            ((y == 1 && this.Colour == Colour.BLACK)
-                            || (y == 6 && this.Colour == Colour.WHITE)))
+                        if (Board[x + (2 * compass)][y] is null &&
+                            ((x == 1 && this.Colour == Colour.BLACK)
+                            || (x == 6 && this.Colour == Colour.WHITE)))
                         {
-                            output.Add(new Move((x, y + (2 * compass)), (x, y), Board.Id));
+                            output.Add(new Move((x + (2 * compass), y), (x, y), Board.Id));
                         }
                     }
                 }
-            } 
+            }
 
             //Attacks. Forward 1 space, left/right 1
             //Check that forward 1 + left one is valid
-            if(ValidatePosition((x+1, y + (1 * compass)))){
+            if(ValidatePosition((x + (1 * compass), y +1))){
                 //Check that the space is taken
-                if(!(Board[x+1][y+(1*compass)] is null))
+                if(!(Board[x + (1 * compass)][y+1] is null))
                 {
                     //Check that the piece is of a different colour
-                    if(Board[x+1][y+(1*compass)].Colour != Colour)
+                    if(Board[x + (1 * compass)][y+1].Colour != Colour)
                     {
                         //Add the value
                         output.Add(new Move(
-                            (x+1, y+(1*compass)),
+                            (x + (1 * compass), y+1),
+                            (x,y),
+                            Board.Id
+                            ));
+                    }
+                }
+            }    
+            //Attacks. Forward 1 space, left/right 1
+            //Check that forward 1 + left one is valid
+            if(ValidatePosition((x + (1 * compass), y -1))){
+                //Check that the space is taken
+                if(!(Board[x + (1 * compass)][y-1] is null))
+                {
+                    //Check that the piece is of a different colour
+                    if(Board[x + (1 * compass)][y-1].Colour != Colour)
+                    {
+                        //Add the value
+                        output.Add(new Move(
+                            (x + (1 * compass), y-1),
                             (x,y),
                             Board.Id
                             ));
                     }
                 }
             }            
-            //Check that forward 1 + right one is valid
-            if(ValidatePosition((x-1, y + (1 * compass)))){
-                //Check that the space is taken
-                if(!(Board[x-1][y+(1*compass)] is null))
-                {
-                    //Check that the piece is of a different colour
-                    if(Board[x-1][y+(1*compass)].Colour != Colour)
-                    {
-                        //Add the value
-                        output.Add(new Move(
-                            (x-1, y+(1*compass)),
-                            (x,y),
-                            Board.Id
-                            ));
-                    }
-                }
-            }
 
             return output;
         }
