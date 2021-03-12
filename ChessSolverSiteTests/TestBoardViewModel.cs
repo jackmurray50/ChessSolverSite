@@ -11,8 +11,9 @@ namespace ChessSolverSiteTests
         {
             BoardViewModel bm = new BoardViewModel();
             bm.Turn = "BLACK";
-            bm.BoardState = "Lah lah lah";
-            bm.TurnsSinceCapture = 9;
+            bm.BoardState = "RHBQKBHr\nPPPPPPPP\n\nX#X#X#X#\nX#X#X#X#\n" +
+                "X#X#X#X#\nX#X#X#X#\npppppppp\nrhbqkbhr";
+            bm.TurnsSinceCapture = 0;
             bm.WinState = "TBD";
             bm.Add();
             Assert.True(bm.Id > 0);
