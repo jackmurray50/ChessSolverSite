@@ -47,6 +47,45 @@ namespace chess_solver_client
         }
     }
 
+    public abstract class LinePiece : Piece
+    {
+        public LinePiece((int, int) position, Colour colour)
+            : base(position, colour) { }
+
+        protected List<Move> GetMovesInLine((int,int) direction)
+        {
+            List<Move> output = new List<Move>();
+            int x = Position.Item1;
+            int y = Position.Item2;
+            for(int i = 1; true; i++)
+            {
+                //Check if the new position is out of bounds
+                if(ValidatePosition((x + direction.Item1*i, y + direction.Item2 * i)))
+                {
+                    //Check if its an empty space
+                    if(Board[x+direction.Item1*i][y+direction.Item2*i] is null)
+                    {
+                        output.Add(new Move((x+direction.Item1*i,y+direction.Item2*i), (x,y), Board.Id));
+                    }
+                    else
+                    {
+                        //check if its the same colour, but also break; you must stop.  
+                        if(Board[x + direction.Item1 * i][y + direction.Item2 * i].Colour != this.Colour)
+                        {
+                            output.Add(new Move((x+direction.Item1*i,y+direction.Item2*i), (x,y), Board.Id));
+                        }
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return output;
+        }
+    }
+
     public class Pawn : Piece
     {
         public Pawn((int, int) position, Colour colour)
@@ -144,7 +183,7 @@ namespace chess_solver_client
             return output;
         }
     }
-    public class Rook : Piece
+    public class Rook : LinePiece
     {
         public Rook((int, int) position, Colour colour)
             : base(position, colour)
@@ -161,8 +200,17 @@ namespace chess_solver_client
         public override List<Move> PossibleMoves()
         {
             List<Move> output = new List<Move>();
-
-
+            List<(int, int)> vectors = new List<(int, int)>()
+            {
+                (1,0),
+                (-1,0),
+                (-1,0),
+                (0,-1)
+            };
+            foreach ((int, int) v in vectors)
+            {
+                output.AddRange(GetMovesInLine(v));
+            }
             return output;
         }
     }
@@ -217,7 +265,7 @@ namespace chess_solver_client
             return output;
         }
     }
-    public class Bishop : Piece
+    public class Bishop : LinePiece
     {
         public Bishop((int, int) position, Colour colour)
             : base(position, colour)
@@ -234,11 +282,21 @@ namespace chess_solver_client
         public override List<Move> PossibleMoves()
         {
             List<Move> output = new List<Move>();
-
+            List<(int, int)> vectors = new List<(int, int)>()
+            {
+                (1,1),
+                (1,-1),
+                (-1,1),
+                (-1,1),
+            };
+            foreach ((int, int) v in vectors)
+            {
+                output.AddRange(GetMovesInLine(v));
+            }
             return output;
         }
     }
-    public class Queen : Piece
+    public class Queen : LinePiece
     {
         public Queen((int, int) position, Colour colour)
             : base(position, colour)
@@ -255,11 +313,25 @@ namespace chess_solver_client
         public override List<Move> PossibleMoves()
         {
             List<Move> output = new List<Move>();
-
+            List<(int, int)> vectors = new List<(int, int)>()
+            {
+                (1,1),
+                (1,0),
+                (1,-1),
+                (-1,1),
+                (-1,0),
+                (-1,1),
+                (0,1),
+                (0,-1)
+            };
+            foreach((int,int) v in vectors)
+            {
+                output.AddRange(GetMovesInLine(v));
+            }
             return output;
         }
     }
-    public class King : Piece
+    public class King: Piece
     {
         public King((int, int) position, Colour colour)
             : base(position, colour)

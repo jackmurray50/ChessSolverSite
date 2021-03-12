@@ -17,6 +17,7 @@ namespace ChessSolverClientTestss
         {
             this.output = output;
         }
+
         [Fact]
         public void Test_PawnPossibleMoves()
         {
@@ -51,8 +52,6 @@ namespace ChessSolverClientTestss
             Assert.True(ForwardsMatches == 1 && ForwardsTwoMatches == 1 && AttackRight == 1 && AttackLeft == 0);
 
         }
-    
-    
         [Fact]
         public void Test_HussarPossibleMoves()
         {
@@ -74,7 +73,6 @@ namespace ChessSolverClientTestss
             Assert.True(moves.Count() == 7);
 
         }
-    
         [Fact]
         public void Test_KingPossibleMoves()
         {
@@ -94,6 +92,60 @@ namespace ChessSolverClientTestss
             //Will manually check the other moves for now, but automatic testing is
             //on the todo list.
             Assert.True(moves.Count() == 7);
+        }
+        [Fact]
+        public void Test_BishopPossibleMoves()
+        {
+            Bishop Bishop = new Bishop((4, 4), Colour.BLACK);
+            Pawn ToLive = new Pawn((4, 5), Colour.BLACK);
+            Pawn ToDie = new Pawn((3, 3), Colour.WHITE);
+            ChessBoard board = new ChessBoard(0, new List<Piece>() {Bishop,
+                ToDie, ToLive
+            });
+
+            List<Move> moves = Bishop.PossibleMoves();
+            foreach (var m in moves)
+            {
+                output.WriteLine(m.To + ", " + m.From);
+            }
+
+            Assert.True(moves.Count > 0);
+        }
+        [Fact]
+        public void Test_RookPossibleMoves()
+        {
+            Rook Rook = new Rook((4, 4), Colour.BLACK);
+            Pawn ToLive = new Pawn((4, 5), Colour.BLACK);
+            Pawn ToDie = new Pawn((3, 3), Colour.WHITE);
+            ChessBoard board = new ChessBoard(0, new List<Piece>() {Rook,
+                ToDie, ToLive
+            });
+
+            List<Move> moves = Rook.PossibleMoves();
+            foreach (var m in moves)
+            {
+                output.WriteLine(m.To + ", " + m.From);
+            }
+
+            Assert.True(moves.Count > 0);
+        }
+        [Fact]
+        public void Test_QueenPossibleMoves()
+        {
+            Queen Queen = new Queen((4, 4), Colour.BLACK);
+            Pawn ToLive = new Pawn((4, 5), Colour.BLACK);
+            Pawn ToDie = new Pawn((3, 3), Colour.WHITE);
+            ChessBoard board = new ChessBoard(0, new List<Piece>() {Queen,
+                ToDie, ToLive
+            });
+
+            List<Move> moves = Queen.PossibleMoves();
+            foreach (var m in moves)
+            {
+                output.WriteLine(m.To + ", " + m.From);
+            }
+
+            Assert.True(moves.Count > 0);
         }
     }
 }
