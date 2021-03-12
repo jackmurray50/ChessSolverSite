@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace chess_solver_client
 {
@@ -12,7 +14,7 @@ namespace chess_solver_client
         static readonly HttpClient client = new HttpClient();
 
         static private bool IsVerbose = false;
-        static private int MemoryAllowance = 512;
+        static private int MemoryAllowance = 536870091;
         static private string username;
         static private string password;
 
@@ -24,17 +26,72 @@ namespace chess_solver_client
             SetArgs(new List<string>(args));
             //Step 2: If necessary, sign in
 
-            //Step 3: Request a board from the server
-            await GetBoard();
+            //Step 3: Request a board from the server. In a loop so
+            //it can repeat later. For now its set to run once
+            int i = 0;
+            while (i == 0)
+            {
+                i = 1;
+                BoardViewModel temp = await GetBoard();
+                ChessBoard root = new ChessBoard(0, temp.BoardState, temp.TurnsSinceCapture, temp.Turn);
 
-            //Step 4: Find the possible moves for the current board state and add them to a stack
-            //Stack <move> =  new Stack<move>();
-
+                if (IsVerbose)
+                {
+                    Console.WriteLine("Root Board: \n" + root.UglyToString());
+                }
+                //Step 4: Find the possible moves for the current board state and add them to a stack
+                Stack<Move> Stack = new Stack<Move>();
+                List<ChessBoard> Boards = new List<ChessBoard>();
+                Boards.Add(root);
+                //Step 5: Initial assignment of board and moves
+                foreach (Move m in root.PossibleMoves())
+                {
+                    Stack.Push(m);
+                }
+                //Step 6: Initialize Process so we can track memory usage.
+                //Tracking memory usage is expensive so we'll only do it before adding to the stack
+                Process CurProcess = Process.GetCurrentProcess();
+                Console.WriteLine(CurProcess.PrivateMemorySize64);
+                //Step 7: work through the Stack
+                while(Stack.Count > 0)
+                {
+                    Move m = Stack.Pop();
+                    ChessBoard b =
+                        DeepCopy.DeepCopier.Copy<ChessBoard>(Boards[m.BoardId]);
+                    int result = b.Move(m);
+                    b.Id = Boards.Count;
+                    DisplayBoard(b, m);
+                    Boards.Add(b);
+                    if(result == 0)
+                    {
+                        //Only do this if its been 50 checks since, to cut down on cpu time
+                        if(b.Id % 50 == 0)
+                        {
+                            CurProcess.Refresh();
+                        }
+                        //continues if there's RAM available
+                        if(CurProcess.PrivateMemorySize64 <= MemoryAllowance)
+                        {
+                            foreach (Move move in b.PossibleMoves())
+                            {
+                                Stack.Push(move);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine(result);
+                        Console.ReadLine();
+                    }
+                }
+            
+                
+            }
         }
 
         static void DisplayBoard(ChessBoard board, Move move)
         {
-            string output = board.ToString(move);
+            string output = board.ToString();
             foreach (char c in output)
             {
                 //the string is formatted so the place the piece came from is
@@ -62,7 +119,7 @@ namespace chess_solver_client
         /// Gets a board from the Chess Solver Server.
         /// </summary>
         /// <returns></returns>
-        static async Task GetBoard()
+        static async Task<BoardViewModel> GetBoard()
         {
             if (IsVerbose)
             {
@@ -80,15 +137,16 @@ namespace chess_solver_client
                 string responseBody = await response.Content.ReadAsStringAsync();
                 if (IsVerbose)
                 {
-                    Console.WriteLine(responseBody);
+                    Console.WriteLine("Json response: " + responseBody);
                 }
-
+                return JsonConvert.DeserializeObject<BoardViewModel>(responseBody);
 
             }
             catch (HttpRequestException e)
             {
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
+                return null;
             }
         }
 
