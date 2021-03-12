@@ -1,11 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    ViewData["Count"] = new ChessSolverRepository<Boards>().GetCount();
+    ViewData["Count"] = (double)new ChessSolverRepository<Boards>().GetCount();
 }
 
 <div class="text-center">
     <h1 class="display-4">Chess Solver</h1>
     <p>Help beat <a href="https://en.wikipedia.org/wiki/Shannon_number">Shannon</a> by donating processor time!</p>
-    <p>Completed @ViewData["Count"] out of ~10<sup>43</sup> possible boards<br/>@{(double)ViewData["Count"] / 100000000000000000000000000000000000000000.0;}</p>
+    <p>Completed @ViewData["Count"] out of ~10<sup>43</sup> possible boards<br/>@{var num = ((double)ViewData["Count"] / (double)100000000000000000000000000000000000000000.0);}@num %</p>
 
 </div>
