@@ -204,6 +204,19 @@ namespace chess_solver_client
                 }
             }
 
+            //Check if any moves win; if so, only include the winning move.
+            //Even if there's multiple ways to win, the algorithm doesn't care.
+            foreach(Move m in output)
+            {
+                if(!(Board[m.To.Item1][m.To.Item2] is null))
+                {
+                    if(Board[m.To.Item1][m.To.Item2] is King)
+                    {
+                        return new List<Move>() { m };
+                    }
+                }
+            }
+
             return output;
         }
 
