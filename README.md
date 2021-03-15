@@ -21,3 +21,8 @@ The client is a command line application that accepts a few values at start-up: 
 It should be noted that the server is NOT secure. Passwords are optional, they're not salted (They are encrypted though), there's no way to retrieve a forgotten password or to change it. That may be changed in the future, but for now its considered an unimportant feature.
 
 In short: The server passes a board-state to the client. The client plays games, then returns them back to the server, which then adds those to the database.
+
+Useful reading: 
+[Shannon's Number](https://en.wikipedia.org/wiki/Shannon_number), an estimation of how many possible games there are.
+[Solving Chess](https://en.wikipedia.org/wiki/Solving_chess) is finding ways to optimize a strategy for chess in a way that one player can always force a victory.
+[Solved Games](https://en.wikipedia.org/wiki/Solved_game) are games whose outcome can be predicted from any position.
