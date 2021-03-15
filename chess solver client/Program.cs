@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -42,8 +43,8 @@ namespace chess_solver_client
                 Stack<Move> Stack = new Stack<Move>();
                 List<ChessBoard> Boards = new List<ChessBoard>();
                 List<BoardRelationshipViewModel> Relationships = new List<BoardRelationshipViewModel>();
-                List<BoardViewModel> FinishedBoards = new List<BoardViewModel>();
-                
+                List<BoardViewModel> ExportableBoards = new List<BoardViewModel>();
+                int nextId = 0;
                 Boards.Add(root);
                 //Step 5: Initial assignment of board and moves
                 foreach (Move m in root.PossibleMoves())
@@ -53,47 +54,31 @@ namespace chess_solver_client
                 //Step 6: Initialize Process so we can track memory usage.
                 //Tracking memory usage is expensive so we'll only do it before adding to the stack
                 Process CurProcess = Process.GetCurrentProcess();
-                Console.WriteLine(CurProcess.PrivateMemorySize64);
                 //Step 7: work through the Stack
                 bool KeepAddingToStack = true;
                 while(Stack.Count > 0)
                 {
                     Move m = Stack.Pop();
                     ChessBoard b =
-                        DeepCopy.DeepCopier.Copy<ChessBoard>(Boards[m.BoardId]);
-                    Boards[m.BoardId].Moves -= 1;
+                        DeepCopy.DeepCopier.Copy<ChessBoard>(Boards.Where(wb => wb.Id == m.BoardId).First());
+                    Boards.Where(wb => wb.Id == m.BoardId).First().Moves -= 1;
+
+                    //Set new Id
+                    b.Id = nextId;
+                    nextId++;
+                    //Make the move and see what its result is
+                    int result = b.Move(m);
+                    //Add a new relationship
+                    Relationships.Add(new BoardRelationshipViewModel(Relationships.Count, b.Id, m.BoardId));
+                    Boards.Add(b);
+                    ExportableBoards.Add(CreateBoardViewModel(b));
                     if(Boards[m.BoardId].Moves == 0)
                     {
                         //No longer need the Board saved, so we remove it and create a BoardViewModel
-                        //TODO
-                        ChessBoard CurBoard = Boards[m.BoardId];
-                        BoardViewModel bvm = new BoardViewModel();
-                        bvm.Id = m.BoardId;
-                        bvm.IsFinished = true;
-                        if(CurBoard.Turn == Colour.BLACK)
-                        {
-                            bvm.Turn = "BLACK";
-                        }
-                        else
-                        {
-                            bvm.Turn = "WHITE";
-                        }
-                        bvm.TurnsSinceCapture = CurBoard.TurnsSinceCapture;
-                        bvm.BoardState = CurBoard.UglyToString();
-                        FinishedBoards.Add(bvm);
+                        ExportableBoards.Where(wb => wb.Id == m.BoardId).First().IsFinished = true;
+                        
                         Boards.Remove(Boards[m.BoardId]);
                     }
-                    //Make the move and see what its result is
-                    int result = b.Move(m);
-                    //Set it a new Id
-                    b.Id = Boards.Count;
-                    //Add a new relationship
-                    Relationships.Add(new BoardRelationshipViewModel(Relationships.Count, b.Id, m.BoardId));
-                    if (IsVerbose)
-                    {
-                        DisplayBoard(b, m);
-                    }
-                    Boards.Add(b);
                     if(result == 0)
                     {
                         //Only do this if its been 50 checks since, to cut down on cpu time
@@ -116,12 +101,49 @@ namespace chess_solver_client
                     }
                     else //If there's a win
                     {
-
+                        BoardViewModel WonBoard = ExportableBoards.Where(wb => wb.Id == b.Id).First();
+                        if (result == 1)
+                        {
+                            WonBoard.WinState = "BLACK";
+                        }else if(result == 2)
+                        {
+                            WonBoard.WinState = "WHITE";
+                        }
+                        else if(result == 3)
+                        {
+                            WonBoard.WinState = "DRAW";
+                        }
                     }
                 }
-
-                Console.WriteLine($"Finished first Stack. Board count: {FinishedBoards.Count} Relationship count: {Relationships.Count}\nUploading...");
+                if (IsVerbose)
+                {
+                    Console.WriteLine($"Finished first Stack. Board count: {ExportableBoards.Count} Relationship count: {Relationships.Count}\n" +
+                        $"\tBlack wins: {ExportableBoards.Where(wb => wb.WinState == "BLACK").Count()}\n" +
+                        $"\tWhite wins: { ExportableBoards.Where(wb => wb.WinState == "WHITE").Count()}\n" +
+                        $"\tDraws: {ExportableBoards.Where(wb => wb.WinState == "BLACK").Count()}\nUploading...");
+                    
+                }
+            
             }
+        }
+
+        static BoardViewModel CreateBoardViewModel(ChessBoard b)
+        {
+            ChessBoard CurBoard = b;
+            BoardViewModel bvm = new BoardViewModel();
+            bvm.Id = b.Id;
+            bvm.IsFinished = false;
+            if (CurBoard.Turn == Colour.BLACK)
+            {
+                bvm.Turn = "BLACK";
+            }
+            else
+            {
+                bvm.Turn = "WHITE";
+            }
+            bvm.TurnsSinceCapture = CurBoard.TurnsSinceCapture;
+            bvm.BoardState = CurBoard.UglyToString();
+            return bvm;
         }
 
         static void DisplayBoard(ChessBoard board, Move move)
