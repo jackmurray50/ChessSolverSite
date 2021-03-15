@@ -24,5 +24,8 @@ In short: The server passes a board-state to the client. The client plays games,
 
 Useful reading: 
 [Shannon's Number](https://en.wikipedia.org/wiki/Shannon_number), an estimation of how many possible games there are.
+
 [Solving Chess](https://en.wikipedia.org/wiki/Solving_chess) is finding ways to optimize a strategy for chess in a way that one player can always force a victory.
+
 [Solved Games](https://en.wikipedia.org/wiki/Solved_game) are games whose outcome can be predicted from any position.
+
