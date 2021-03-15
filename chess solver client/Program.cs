@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
@@ -42,6 +41,9 @@ namespace chess_solver_client
                 //Step 4: Find the possible moves for the current board state and add them to a stack
                 Stack<Move> Stack = new Stack<Move>();
                 List<ChessBoard> Boards = new List<ChessBoard>();
+                List<BoardRelationshipViewModel> Relationships = new List<BoardRelationshipViewModel>();
+                List<BoardViewModel> FinishedBoards = new List<BoardViewModel>();
+                
                 Boards.Add(root);
                 //Step 5: Initial assignment of board and moves
                 foreach (Move m in root.PossibleMoves())
@@ -53,14 +55,44 @@ namespace chess_solver_client
                 Process CurProcess = Process.GetCurrentProcess();
                 Console.WriteLine(CurProcess.PrivateMemorySize64);
                 //Step 7: work through the Stack
+                bool KeepAddingToStack = true;
                 while(Stack.Count > 0)
                 {
                     Move m = Stack.Pop();
                     ChessBoard b =
                         DeepCopy.DeepCopier.Copy<ChessBoard>(Boards[m.BoardId]);
+                    Boards[m.BoardId].Moves -= 1;
+                    if(Boards[m.BoardId].Moves == 0)
+                    {
+                        //No longer need the Board saved, so we remove it and create a BoardViewModel
+                        //TODO
+                        ChessBoard CurBoard = Boards[m.BoardId];
+                        BoardViewModel bvm = new BoardViewModel();
+                        bvm.Id = m.BoardId;
+                        bvm.IsFinished = true;
+                        if(CurBoard.Turn == Colour.BLACK)
+                        {
+                            bvm.Turn = "BLACK";
+                        }
+                        else
+                        {
+                            bvm.Turn = "WHITE";
+                        }
+                        bvm.TurnsSinceCapture = CurBoard.TurnsSinceCapture;
+                        bvm.BoardState = CurBoard.UglyToString();
+                        FinishedBoards.Add(bvm);
+                        Boards.Remove(Boards[m.BoardId]);
+                    }
+                    //Make the move and see what its result is
                     int result = b.Move(m);
+                    //Set it a new Id
                     b.Id = Boards.Count;
-                    DisplayBoard(b, m);
+                    //Add a new relationship
+                    Relationships.Add(new BoardRelationshipViewModel(Relationships.Count, b.Id, m.BoardId));
+                    if (IsVerbose)
+                    {
+                        DisplayBoard(b, m);
+                    }
                     Boards.Add(b);
                     if(result == 0)
                     {
@@ -70,7 +102,11 @@ namespace chess_solver_client
                             CurProcess.Refresh();
                         }
                         //continues if there's RAM available
-                        if(CurProcess.PrivateMemorySize64 <= MemoryAllowance)
+                        if(CurProcess.PrivateMemorySize64 >= MemoryAllowance)
+                        {
+                            KeepAddingToStack = false;
+                        }
+                        if (KeepAddingToStack)
                         {
                             foreach (Move move in b.PossibleMoves())
                             {
@@ -78,14 +114,13 @@ namespace chess_solver_client
                             }
                         }
                     }
-                    else
+                    else //If there's a win
                     {
-                        Console.WriteLine(result);
-                        Console.ReadLine();
+
                     }
                 }
-            
-                
+
+                Console.WriteLine($"Finished first Stack. Board count: {FinishedBoards.Count} Relationship count: {Relationships.Count}\nUploading...");
             }
         }
 

@@ -25,11 +25,17 @@ namespace chess_solver_client
         public List<Piece> Pieces {get; set;}
         public Colour Turn { get; set; }
 
+        /// <summary>
+        /// Tracks how many possible moves are left.
+        /// </summary>
+        public int Moves { get; set; }
+
         //Used to track the 50-turn rule
         public int TurnsSinceCapture { get; set; }
     
         public ChessBoard(int id, string boardState, int turnsSinceCapture, string turn)
         {
+            Moves = 0;
             Id = id;
             this.TurnsSinceCapture = turnsSinceCapture;
             if(turn == "WHITE")
@@ -212,11 +218,12 @@ namespace chess_solver_client
                 {
                     if(Board[m.To.Item1][m.To.Item2] is King)
                     {
+                        Moves = 1;
                         return new List<Move>() { m };
                     }
                 }
             }
-
+            Moves = output.Count;
             return output;
         }
 

@@ -1,8 +1,7 @@
 {
   "profiles": {
     "chess solver client": {
-      "commandName": "Project",
-      "commandLineArgs": "-user jack -pass murray -v "
+      "commandName": "Project"
     }
   }
 }
