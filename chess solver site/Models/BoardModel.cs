@@ -82,12 +82,12 @@ namespace chess_solver_site.Models
             return selectedBoard.FirstOrDefault();
         }
 
-        public Boards GetUnwonBoard()
+        public Boards GetUnfinishedBoard()
         {
             List<Boards> selectedBoard = null;
             try
             {
-                selectedBoard = repository.GetByExpression(b => b.WinState == "TBD");
+                selectedBoard = repository.GetByExpression(b => b.IsFinished == false);
             }
             catch (Exception ex)
             {

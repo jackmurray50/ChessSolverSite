@@ -16,6 +16,7 @@ namespace chess_solver_site.Models
         public string Turn { get; set; }
         public string WinState { get; set; }
         public int VerificationAmount { get; set; }
+        public bool IsFinished { get; set; }
 
         public BoardViewModel()
         {
@@ -67,7 +68,7 @@ namespace chess_solver_site.Models
         {
             try
             {
-                Boards board = _model.GetUnwonBoard();
+                Boards board = _model.GetUnfinishedBoard();
                 MapProperties(board);
 
             }

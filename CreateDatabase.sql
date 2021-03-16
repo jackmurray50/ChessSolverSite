@@ -25,7 +25,8 @@ CREATE TABLE [dbo].[Boards]
 	[TurnsSinceCapture] INT NOT NULL,
 	[Turn] VARCHAR(5) NOT NULL CHECK ([Turn] in('WHITE', 'BLACK')),
 	--caching win-state so lookup is faster
-	[WinState] VARCHAR(5) NOT NULL CHECK ([WinState] in ('WHITE', 'BLACK', 'DRAW', 'TBD')) DEFAULT ('TBD'),
+	[WinState] VARCHAR(5) NOT NULL CHECK ([WinState] in ('WHITE', 'BLACK', 'DRAW', 'NA')) DEFAULT ('NA'),
+	[IsFinished] BIT NOT NULL,
 	[VerificationAmount] INT
 )
 

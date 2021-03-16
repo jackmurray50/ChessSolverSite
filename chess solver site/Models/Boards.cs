@@ -12,6 +12,7 @@ namespace chess_solver_site.Models
         public string Turn { get; set; }
         public string WinState { get; set; }
         public int VerificationAmount { get; set; }
+        public bool IsFinished { get; set; }
     }
 
     public class BoardsRelationships : ChessSolverEntity
