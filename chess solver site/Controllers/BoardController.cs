@@ -78,5 +78,25 @@ namespace chess_solver_site.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+    
+        public ActionResult Put(List<BoardViewModel> boards)
+        {
+            try
+            {
+                int count = 0;
+                foreach(BoardViewModel bvm in boards)
+                {
+                    count++;
+                    bvm.Add();
+                }
+                return Ok($"{count} boards added");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Problem in " + GetType().Name + " " +
+                    MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }
