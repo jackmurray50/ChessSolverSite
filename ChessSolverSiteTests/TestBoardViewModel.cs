@@ -14,7 +14,8 @@ namespace ChessSolverSiteTests
             bm.BoardState = "RHBQKBHR\nPPPPPPPP\nX#X#X#X#\nX#X#X#X#\n" +
                 "X#X#X#X#\nX#X#X#X#\npppppppp\nrhbqkbhr";
             bm.TurnsSinceCapture = 0;
-            bm.WinState = "TBD";
+            bm.WinState = "NA";
+            bm.IsFinished = false;
             bm.Add();
             Assert.True(bm.Id > 0);
         }
