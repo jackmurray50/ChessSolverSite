@@ -14,7 +14,7 @@ namespace chess_solver_client
         static readonly HttpClient client = new HttpClient();
 
         static private bool IsVerbose = false;
-        static private int MemoryAllowance = 536870091;
+        static private int MemoryAllowance = 100000000;
         static private string username;
         static private string password;
 
@@ -33,6 +33,7 @@ namespace chess_solver_client
             {
                 i = 1;
                 BoardViewModel temp = await GetBoard();
+
                 ChessBoard root = new ChessBoard(0, temp.BoardState, temp.TurnsSinceCapture, temp.Turn);
 
                 if (IsVerbose)
@@ -63,21 +64,18 @@ namespace chess_solver_client
                         DeepCopy.DeepCopier.Copy<ChessBoard>(Boards.Where(wb => wb.Id == m.BoardId).First());
                     Boards.Where(wb => wb.Id == m.BoardId).First().Moves -= 1;
 
-                    //Set new Id
+
                     b.Id = nextId;
-                    nextId++;
                     //Make the move and see what its result is
                     int result = b.Move(m);
                     //Add a new relationship
                     Relationships.Add(new BoardRelationshipViewModel(Relationships.Count, b.Id, m.BoardId));
                     Boards.Add(b);
                     ExportableBoards.Add(CreateBoardViewModel(b));
-                    if(Boards[m.BoardId].Moves == 0)
+                    if(Boards.Where(wb => wb.Id == m.BoardId).First().Moves == 0)
                     {
-                        //No longer need the Board saved, so we remove it and create a BoardViewModel
+                        //Set the board to Finished.
                         ExportableBoards.Where(wb => wb.Id == m.BoardId).First().IsFinished = true;
-                        
-                        Boards.Remove(Boards[m.BoardId]);
                     }
                     if(result == 0)
                     {
@@ -101,7 +99,7 @@ namespace chess_solver_client
                     }
                     else //If there's a win
                     {
-                        BoardViewModel WonBoard = ExportableBoards.Where(wb => wb.Id == b.Id).First();
+                        BoardViewModel WonBoard = ExportableBoards.Where(wb => wb.Id == m.BoardId).First();
                         if (result == 1)
                         {
                             WonBoard.WinState = "BLACK";
@@ -114,13 +112,15 @@ namespace chess_solver_client
                             WonBoard.WinState = "DRAW";
                         }
                     }
+                    //Set new Id
+                    nextId++;
                 }
                 if (IsVerbose)
                 {
                     Console.WriteLine($"Finished first Stack. Board count: {ExportableBoards.Count} Relationship count: {Relationships.Count}\n" +
                         $"\tBlack wins: {ExportableBoards.Where(wb => wb.WinState == "BLACK").Count()}\n" +
                         $"\tWhite wins: { ExportableBoards.Where(wb => wb.WinState == "WHITE").Count()}\n" +
-                        $"\tDraws: {ExportableBoards.Where(wb => wb.WinState == "BLACK").Count()}\nUploading...");
+                        $"\tDraws: {ExportableBoards.Where(wb => wb.WinState == "DRAW").Count()}\nUploading...");
                     
                 }
             
@@ -133,6 +133,7 @@ namespace chess_solver_client
             BoardViewModel bvm = new BoardViewModel();
             bvm.Id = b.Id;
             bvm.IsFinished = false;
+            bvm.WinState = "TBD";
             if (CurBoard.Turn == Colour.BLACK)
             {
                 bvm.Turn = "BLACK";

@@ -1,7 +1,8 @@
 {
   "profiles": {
     "chess solver client": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "-v"
     }
   }
 }
