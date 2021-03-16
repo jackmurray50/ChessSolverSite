@@ -61,6 +61,51 @@ namespace ChessSolverClientTests
             output.WriteLine(board.ToString());
 
         }
+    
+        [Fact]
+        public void Test_Move()
+        {
+            #region construction
+            List<Piece> toAdd = new List<Piece>();
+            //Pawns
+            for (int i = 0; i < 8; i++)
+            {
+                toAdd.Add(new Pawn((1, i), Colour.BLACK));
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                toAdd.Add(new Pawn((6, i), Colour.WHITE));
+            }
+            toAdd.Add(new Rook((7, 0), Colour.WHITE));
+            toAdd.Add(new Rook((7, 7), Colour.WHITE));
+            toAdd.Add(new Hussar((7, 1), Colour.WHITE));
+            toAdd.Add(new Hussar((7, 6), Colour.WHITE));
+            toAdd.Add(new Bishop((7, 2), Colour.WHITE));
+            toAdd.Add(new Bishop((7, 5), Colour.WHITE));
+            toAdd.Add(new King((7, 4), Colour.WHITE));
+            toAdd.Add(new Queen((7, 3), Colour.WHITE));
+
+            toAdd.Add(new Rook((0, 0), Colour.BLACK));
+            toAdd.Add(new Rook((0, 7), Colour.BLACK));
+            toAdd.Add(new Hussar((0, 1), Colour.BLACK));
+            toAdd.Add(new Hussar((0, 6), Colour.BLACK));
+            toAdd.Add(new Bishop((0, 2), Colour.BLACK));
+            toAdd.Add(new Bishop((0, 5), Colour.BLACK));
+            toAdd.Add(new King((0, 4), Colour.BLACK));
+            toAdd.Add(new Queen((0, 3), Colour.BLACK));
+            ChessBoard board = new ChessBoard(0, toAdd);
+            #endregion construction
+
+            List<Move> possibleMoves = board.PossibleMoves();
+
+            foreach(Move m in possibleMoves)
+            {
+                ChessBoard b =
+                        DeepCopy.DeepCopier.Copy<ChessBoard>(board);
+
+                b.Move(m);
+            }
+        }
     }
 
 }
