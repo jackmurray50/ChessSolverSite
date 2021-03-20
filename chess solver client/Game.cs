@@ -173,6 +173,7 @@ namespace chess_solver_client
                 }
                 //2.2 Remove the removed piece from the list of pieces
                 Pieces.Remove(RemovedPiece);
+                TurnsSinceCapture = 0;
             }
             //Step 3:    Hold the piece that's being moved in memory         
             Piece MovedPiece = Board[m.From.Item1][m.From.Item2];

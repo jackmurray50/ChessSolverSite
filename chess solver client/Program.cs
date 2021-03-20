@@ -14,7 +14,7 @@ namespace chess_solver_client
         static readonly HttpClient client = new HttpClient();
 
         static private bool IsVerbose = false;
-        static private int MemoryAllowance = 100000000;
+        static private int MemoryAllowance = 50000000;
         static private string username;
         static private string password;
 
@@ -120,8 +120,13 @@ namespace chess_solver_client
                     Console.WriteLine($"Finished first Stack. Board count: {ExportableBoards.Count} Relationship count: {Relationships.Count}\n" +
                         $"\tBlack wins: {ExportableBoards.Where(wb => wb.WinState == "BLACK").Count()}\n" +
                         $"\tWhite wins: { ExportableBoards.Where(wb => wb.WinState == "WHITE").Count()}\n" +
-                        $"\tDraws: {ExportableBoards.Where(wb => wb.WinState == "DRAW").Count()}\nUploading...");
+                        $"\tDraws: {ExportableBoards.Where(wb => wb.WinState == "DRAW").Count()}");
                     
+                }
+                var response = Submit(ExportableBoards, Relationships);
+                if (IsVerbose)
+                {
+                    Console.WriteLine($"Status: {(int)response.Result.StatusCode}: {response.Result.Content.ReadAsStringAsync().Result}");
                 }
             
             }
@@ -145,6 +150,18 @@ namespace chess_solver_client
             bvm.TurnsSinceCapture = CurBoard.TurnsSinceCapture;
             bvm.BoardState = CurBoard.UglyToString();
             return bvm;
+        }
+
+        static async Task<HttpResponseMessage> Submit(List<BoardViewModel> boards, List<BoardRelationshipViewModel> relationships)
+        {
+            if (IsVerbose)
+            {
+                Console.WriteLine("Uploading to " + ConnectionString + "api/board");
+            }
+            var payload = JsonConvert.SerializeObject((boards, relationships));
+            var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
+
+            return await client.PostAsync(ConnectionString + "api/board", content);
         }
 
         static void DisplayBoard(ChessBoard board, Move move)
