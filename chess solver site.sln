@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "chess solver client", "ches
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessSolverSiteTests", "ChessSolverSiteTests\ChessSolverSiteTests.csproj", "{FC5C47CD-D2F5-4A5C-8912-F1A06C2C544F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessSolverClientTests", "ChessSolverClientTestss\ChessSolverClientTests.csproj", "{0C2FF53D-62F7-4F64-A6FF-112821C2B3CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessSolverClientTests", "ChessSolverClientTestss\ChessSolverClientTests.csproj", "{0C2FF53D-62F7-4F64-A6FF-112821C2B3CF}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ChessSolverDB", "ChessSolverDB\ChessSolverDB.sqlproj", "{F435D3CB-943C-4795-8E59-05298AF953B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,12 @@ Global
 		{0C2FF53D-62F7-4F64-A6FF-112821C2B3CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C2FF53D-62F7-4F64-A6FF-112821C2B3CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C2FF53D-62F7-4F64-A6FF-112821C2B3CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F435D3CB-943C-4795-8E59-05298AF953B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F435D3CB-943C-4795-8E59-05298AF953B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F435D3CB-943C-4795-8E59-05298AF953B9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F435D3CB-943C-4795-8E59-05298AF953B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F435D3CB-943C-4795-8E59-05298AF953B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F435D3CB-943C-4795-8E59-05298AF953B9}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
