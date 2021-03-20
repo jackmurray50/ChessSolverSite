@@ -1,7 +1,4 @@
-﻿--Ensure there's no current table
-USE ChessSolver;
-
-DROP TABLE IF EXISTS [dbo].[Accounts];
+﻿DROP TABLE IF EXISTS [dbo].[Accounts];
 DROP TABLE IF EXISTS [dbo].[BoardsRelationships];
 DROP TABLE IF EXISTS [dbo].[Boards];
 
