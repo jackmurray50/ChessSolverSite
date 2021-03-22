@@ -69,10 +69,12 @@ namespace chess_solver_site.Controllers
             {
                 Dictionary<int, int> IdDictionary = new Dictionary<int, int>();
                 //Go through the boards, adding them BY BOARD STATE, not by Id. This enforces memoization
+                int NewCount = 0;
+                int UpdatedCount = 0;
                 foreach(BoardViewModel bvm in payload.boards)
                 {
                     int OriginalId = bvm.Id;
-                    int newId = bvm.AddByState();
+                    int newId = bvm.AddByBoardState();
                     IdDictionary.Add(OriginalId, newId);
                 }
                 //Each time one is added, get its Id. Add it to a dictionary, in the form of OriginalId:CurrentId
@@ -82,8 +84,16 @@ namespace chess_solver_site.Controllers
                     brvm.ChildId = IdDictionary[brvm.ChildId];
                     brvm.ParentId = IdDictionary[brvm.ParentId];
                     brvm.Add();
+                    if(brvm.ChildId == IdDictionary[brvm.ChildId])
+                    {
+                        NewCount++;
+                    }
+                    else
+                    {
+                        UpdatedCount++;
+                    }
                 }
-                return Ok($"{50} boards added");
+                return Ok($"{NewCount} boards added, {UpdatedCount} boards updated");
             }
             catch (Exception ex)
             {
