@@ -153,7 +153,7 @@ namespace chess_solver_client
 
         static async Task<HttpResponseMessage> Submit(List<BoardViewModel> boards, List<BoardRelationshipViewModel> relationships)
         {
-            var payload = JsonConvert.SerializeObject((boards, relationships), Formatting.Indented);
+            var payload = JsonConvert.SerializeObject(boards, Formatting.Indented);
             var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
             if (IsVerbose)
             {
