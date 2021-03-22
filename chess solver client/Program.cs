@@ -14,7 +14,7 @@ namespace chess_solver_client
         static readonly HttpClient client = new HttpClient();
 
         static private bool IsVerbose = false;
-        static private int MemoryAllowance = 50000000;
+        static private int MemoryAllowance = 25000000;
         static private string username;
         static private string password;
 
@@ -31,7 +31,6 @@ namespace chess_solver_client
             int i = 0;
             while (i == 0)
             {
-                i = 1;
                 BoardViewModel temp = await GetBoard();
 
                 ChessBoard root = new ChessBoard(0, temp.BoardState, temp.TurnsSinceCapture, temp.Turn);
@@ -154,12 +153,12 @@ namespace chess_solver_client
 
         static async Task<HttpResponseMessage> Submit(List<BoardViewModel> boards, List<BoardRelationshipViewModel> relationships)
         {
+            var payload = JsonConvert.SerializeObject(boards, Formatting.Indented);
+            var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
             if (IsVerbose)
             {
-                Console.WriteLine("Uploading to " + ConnectionString + "api/board");
+                Console.WriteLine($"Uploading payload of size {payload.Length / 1000}kb to {ConnectionString}api/board");
             }
-            var payload = JsonConvert.SerializeObject((boards, relationships));
-            var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
 
             return await client.PostAsync(ConnectionString + "api/board", content);
         }

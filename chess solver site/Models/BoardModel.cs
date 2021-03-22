@@ -66,12 +66,12 @@ namespace chess_solver_site.Models
             return selectedBoard.FirstOrDefault();
         }
 
-        public Boards GetByBoardState(string state)
+        public Boards GetByBoardState(string state, string turn)
         {
             List<Boards> selectedBoard = null;
             try
             {
-                selectedBoard = repository.GetByExpression(b => b.BoardState == state);
+                selectedBoard = repository.GetByExpression(b => b.BoardState == state && b.Turn == turn);
             }
             catch (Exception ex)
             {

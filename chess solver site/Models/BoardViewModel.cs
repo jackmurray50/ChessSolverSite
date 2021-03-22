@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace chess_solver_site.Models
 {
@@ -10,12 +11,19 @@ namespace chess_solver_site.Models
     {
         private BoardModel _model;
 
+        [JsonProperty("Id")]
         public int Id { get; set; }
+        [JsonProperty("BoardState")]
         public string BoardState { get; set; }
+        [JsonProperty("TurnsSinceCapture")]
         public int TurnsSinceCapture { get; set; }
+        [JsonProperty("Turn")]
         public string Turn { get; set; }
+        [JsonProperty("WinState")]
         public string WinState { get; set; }
+        [JsonProperty("VerificationAmount")]
         public int VerificationAmount { get; set; }
+        [JsonProperty("IsFinished")]
         public bool IsFinished { get; set; }
 
         public BoardViewModel()
@@ -48,7 +56,7 @@ namespace chess_solver_site.Models
         {
             try
             {
-                Boards board = _model.GetByBoardState(BoardState);
+                Boards board = _model.GetByBoardState(BoardState, Turn);
 
                 MapProperties(board);
             }
@@ -58,7 +66,6 @@ namespace chess_solver_site.Models
             }
             catch (Exception ex)
             {
-                BoardState = "not found";
                 Console.WriteLine("Problem in " + GetType().Name + " " + MethodBase.GetCurrentMethod().Name + " " + ex.Message);
                 throw ex;
             }
@@ -102,6 +109,38 @@ namespace chess_solver_site.Models
                 throw ex;
             }
         }
+        
+        /// <summary>
+        /// The core of the server's input system. Checks if there's an existing record with an identical BoardState AND turn
+        /// If so, simply update the TurnsSinceCapture and return the Id.
+        /// Otherwise, create a new entry and return its Id.
+        /// </summary>
+        /// <returns></returns>
+        public int AddByBoardState()
+        {
+            try
+            {
+                BoardViewModel temp = new BoardViewModel();
+                temp.BoardState = BoardState;
+                temp.GetByBoardState();
+                if(temp.BoardState == "not found")
+                {
+                    this.Add();
+                }
+                else
+                {
+                    this.Update();
+                }
+                Id = temp.Id;
+                
+                return Id;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Problem in " + GetType().Name + " " + MethodBase.GetCurrentMethod().Name + " " + ex.Message);
+                throw ex;
+            }
+        }
         public void Add()
         {
             try
@@ -112,6 +151,7 @@ namespace chess_solver_site.Models
                 board.Turn = Turn;
                 board.TurnsSinceCapture = TurnsSinceCapture;
                 board.WinState = WinState;
+                board.IsFinished = IsFinished;
                 Id = _model.Add(board);
             }
             catch (Exception ex)
@@ -132,6 +172,7 @@ namespace chess_solver_site.Models
                 board.Turn = Turn;
                 board.TurnsSinceCapture = TurnsSinceCapture;
                 board.WinState = WinState;
+                board.IsFinished = IsFinished;
                 opStatus = _model.Update(board);
             }
             catch (Exception ex)
@@ -166,6 +207,7 @@ namespace chess_solver_site.Models
             TurnsSinceCapture = board.TurnsSinceCapture;
             WinState = board.WinState;
             VerificationAmount = board.VerificationAmount;
+            IsFinished = board.IsFinished;
         }
     }
 }
