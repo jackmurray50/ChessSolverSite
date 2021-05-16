@@ -156,7 +156,8 @@ namespace chess_solver_client
             //Note: No validation of moves. It's assumed that the validation will take place
             //at move creation
             //Step 1: Check if its been 50 turns since the last capture
-            if(TurnsSinceCapture > 49)
+            //TEMP CHANGE: TurnsSinceCapture is upped to 69
+            if (TurnsSinceCapture > 69)
             {
                 //1.1: If so, return that it was a draw
                 return 3;
@@ -173,7 +174,9 @@ namespace chess_solver_client
                 }
                 //2.2 Remove the removed piece from the list of pieces
                 Pieces.Remove(RemovedPiece);
-                TurnsSinceCapture = 0;
+
+                //TEMP REMOVAL
+                //TurnsSinceCapture = 0;
             }
             //Step 3:    Hold the piece that's being moved in memory         
             Piece MovedPiece = Board[m.From.Item1][m.From.Item2];
