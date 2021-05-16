@@ -1,11 +1,19 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
     ViewData["Count"] = (double)new ChessSolverRepository<Boards>().GetCount();
+    ViewData["FinishedCount"] = new ChessSolverRepository<Boards>().GetByExpression(ent => ent.WinState != "NA").Count;
+    ViewData["BlackWins"] = new ChessSolverRepository<Boards>().GetByExpression(ent => ent.WinState == "BLACK").Count;
+    ViewData["WhiteWins"] = new ChessSolverRepository<Boards>().GetByExpression(ent => ent.WinState == "WHITE").Count;
 }
 
 <div class="text-center">
     <h1 class="display-4">Chess Solver</h1>
     <p>Help beat <a href="https://en.wikipedia.org/wiki/Shannon_number">Shannon</a> by donating processor time!</p>
     <p>Completed @ViewData["Count"] out of ~10<sup>43</sup> possible boards<br/>@{var num = ((double)ViewData["Count"] / (double)100000000000000000000000000000000000000000.0);}@num %</p>
-
+    <p>Total games finished so far: @ViewData["FinishedCount"]<br/>
+    Total games won by Black so far: @ViewData["BlackWins"]<br />
+    Total games won by White so far: @ViewData["WhiteWins"]<br />
+    Drawed games so far: @{var cnt = (int)ViewData["FinishedCount"] - ((int)ViewData["WhiteWins"] + (int)ViewData["BlackWins"]);}@cnt</p>
+    <p><br />Note: For now im ignoring the 50 turn rule and limiting the game to 60 moves, as most games take in the vicinity of 40 moves. This is just
+    for a proof of concept.</p>
 </div>

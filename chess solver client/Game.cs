@@ -264,7 +264,7 @@ namespace chess_solver_client
             string output = "";
             for (int x = 0; x < Board.Count; x++)
             {
-                output += "\n";
+                
                 for (int y = 0; y < Board[x].Count; y++)
                 {
                     //No piece
@@ -285,6 +285,7 @@ namespace chess_solver_client
                         }
                     }
                 }
+                output += "\n";
             }
             return output;
         }

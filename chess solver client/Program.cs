@@ -14,7 +14,7 @@ namespace chess_solver_client
         static readonly HttpClient client = new HttpClient();
 
         static private bool IsVerbose = false;
-        static private int MemoryAllowance = 25000000;
+        static private int AmountPerPackage = 5000;
         static private string username;
         static private string password;
 
@@ -28,8 +28,7 @@ namespace chess_solver_client
 
             //Step 3: Request a board from the server. In a loop so
             //it can repeat later. For now its set to run once
-            int i = 0;
-            while (i == 0)
+            while (true)
             {
                 BoardViewModel temp = await GetBoard();
 
@@ -44,16 +43,16 @@ namespace chess_solver_client
                 List<ChessBoard> Boards = new List<ChessBoard>();
                 List<BoardRelationshipViewModel> Relationships = new List<BoardRelationshipViewModel>();
                 List<BoardViewModel> ExportableBoards = new List<BoardViewModel>();
-                int nextId = 0;
+                int nextId = 1;
                 Boards.Add(root);
                 //Step 5: Initial assignment of board and moves
                 foreach (Move m in root.PossibleMoves())
                 {
                     Stack.Push(m);
                 }
+                ExportableBoards.Add(CreateBoardViewModel(root));
+                ExportableBoards[0].IsFinished = true;
                 //Step 6: Initialize Process so we can track memory usage.
-                //Tracking memory usage is expensive so we'll only do it before adding to the stack
-                Process CurProcess = Process.GetCurrentProcess();
                 //Step 7: work through the Stack
                 bool KeepAddingToStack = true;
                 while(Stack.Count > 0)
@@ -78,14 +77,7 @@ namespace chess_solver_client
                     }
                     if(result == 0)
                     {
-                        //Only do this if its been 50 checks since, to cut down on cpu time
-                        if(b.Id % 50 == 0)
-                        {
-                            CurProcess.Refresh();
-                        }
-                        //continues if there's RAM available
-                        if(CurProcess.PrivateMemorySize64 >= MemoryAllowance)
-                        {
+                        if (ExportableBoards.Count > AmountPerPackage) {
                             KeepAddingToStack = false;
                         }
                         if (KeepAddingToStack)
@@ -242,7 +234,7 @@ namespace chess_solver_client
                 }
                 if (args.Contains("-m"))
                 {
-                    MemoryAllowance = int.Parse(args[args.IndexOf("-m") + 1]);
+                    AmountPerPackage = int.Parse(args[args.IndexOf("-m") + 1]);
                 }
                 if (args.Contains("-user"))
                 {

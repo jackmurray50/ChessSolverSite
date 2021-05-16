@@ -83,10 +83,11 @@ namespace chess_solver_site.Controllers
                 //After all boards are added, add the relationships after modifying them using the Id Dictionary
                 foreach (BoardRelationshipViewModel brvm in content.Relationships)
                 {
+                    int tempId = brvm.ChildId;
                     brvm.ChildId = IdDictionary[brvm.ChildId];
                     brvm.ParentId = IdDictionary[brvm.ParentId];
                     brvm.Add();
-                    if (brvm.ChildId == IdDictionary[brvm.ChildId])
+                    if (brvm.ChildId == tempId)
                     {
                         NewCount++;
                     }

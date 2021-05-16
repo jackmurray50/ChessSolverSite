@@ -137,8 +137,14 @@ namespace chess_solver_site.Models
                 }
                 else
                 {
-                    if(this.TurnsSinceCapture < temp.TurnsSinceCapture)
+                    if(this.TurnsSinceCapture < temp.TurnsSinceCapture ||
+                        this.IsFinished != temp.IsFinished)
                     {
+                        if(TurnsSinceCapture > temp.TurnsSinceCapture)
+                        {
+                            TurnsSinceCapture = temp.TurnsSinceCapture;
+                        }
+                        this.Id = temp.Id;
                         this.Update();
                     }
                     

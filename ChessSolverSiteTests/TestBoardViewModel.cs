@@ -12,8 +12,7 @@ namespace ChessSolverSiteTests
         {
             BoardViewModel bm = new BoardViewModel();
             bm.Turn = "BLACK";
-            bm.BoardState = "RHBQKBHR\nPPPPPPPP\nX#X#X#X#\nX#X#X#X#\n" +
-                "X#X#X#X#\nX#X#X#X#\npppppppp\nrhbqkbhr";
+            bm.BoardState = "RHBQKBHR\nPPPPPPPP\nX#X#X#X#\n#X#X#X#X\nX#X#X#X#\n#X#X#X#X\npppppppp\nrhbqkbhr\n";
             bm.TurnsSinceCapture = 0;
             bm.WinState = "NA";
             bm.IsFinished = false;
