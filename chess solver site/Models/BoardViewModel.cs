@@ -57,8 +57,15 @@ namespace chess_solver_site.Models
             try
             {
                 Boards board = _model.GetByBoardState(BoardState, Turn);
+                if(board is null)
+                {
+                    BoardState = "not found";
+                }
+                else
+                {
+                    MapProperties(board);
 
-                MapProperties(board);
+                }
             }
             catch (NullReferenceException)
             {
@@ -122,6 +129,7 @@ namespace chess_solver_site.Models
             {
                 BoardViewModel temp = new BoardViewModel();
                 temp.BoardState = BoardState;
+                temp.Turn = Turn;
                 temp.GetByBoardState();
                 if(temp.BoardState == "not found")
                 {
@@ -129,9 +137,13 @@ namespace chess_solver_site.Models
                 }
                 else
                 {
-                    this.Update();
+                    if(this.TurnsSinceCapture < temp.TurnsSinceCapture)
+                    {
+                        this.Update();
+                    }
+                    
+                    Id = temp.Id;
                 }
-                Id = temp.Id;
                 
                 return Id;
             }
@@ -166,8 +178,8 @@ namespace chess_solver_site.Models
             UpdateStatus opStatus = UpdateStatus.Failed;
             try
             {
-                Id = -1;
                 Boards board = new Boards();
+                board.Id = Id;
                 board.BoardState = BoardState;
                 board.Turn = Turn;
                 board.TurnsSinceCapture = TurnsSinceCapture;

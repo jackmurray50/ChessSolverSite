@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using chess_solver_site.Models;
 using System.Text.Json;
 using System.Diagnostics;
+using chess_solver_site.Requests;
 
 namespace chess_solver_site.Controllers
 {
@@ -63,7 +64,7 @@ namespace chess_solver_site.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Put(List<BoardViewModel> boards)
+        public ActionResult Put(BoardPutRequest content)
         {
             try
             {
@@ -71,7 +72,8 @@ namespace chess_solver_site.Controllers
                 //Go through the boards, adding them BY BOARD STATE, not by Id. This enforces memoization
                 int NewCount = 0;
                 int UpdatedCount = 0;
-                foreach(BoardViewModel bvm in boards)
+
+                foreach(BoardViewModel bvm in content.Boards)
                 {
                     int OriginalId = bvm.Id;
                     int newId = bvm.AddByBoardState();
@@ -79,20 +81,20 @@ namespace chess_solver_site.Controllers
                 }
                 //Each time one is added, get its Id. Add it to a dictionary, in the form of OriginalId:CurrentId
                 //After all boards are added, add the relationships after modifying them using the Id Dictionary
-                //foreach(BoardRelationshipViewModel brvm in payload.relationships)
-                //{
-                //    brvm.ChildId = IdDictionary[brvm.ChildId];
-                //    brvm.ParentId = IdDictionary[brvm.ParentId];
-                //    brvm.Add();
-                //    if(brvm.ChildId == IdDictionary[brvm.ChildId])
-                //    {
-                //        NewCount++;
-                //    }
-                //    else
-                //    {
-                //        UpdatedCount++;
-                //    }
-                //}
+                foreach (BoardRelationshipViewModel brvm in content.Relationships)
+                {
+                    brvm.ChildId = IdDictionary[brvm.ChildId];
+                    brvm.ParentId = IdDictionary[brvm.ParentId];
+                    brvm.Add();
+                    if (brvm.ChildId == IdDictionary[brvm.ChildId])
+                    {
+                        NewCount++;
+                    }
+                    else
+                    {
+                        UpdatedCount++;
+                    }
+                }
                 return Ok($"{NewCount} boards added, {UpdatedCount} boards updated");
             }
             catch (Exception ex)

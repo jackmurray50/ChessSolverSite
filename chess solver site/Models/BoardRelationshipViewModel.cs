@@ -25,7 +25,6 @@ namespace chess_solver_site.Models
             {
                 Id = -1;
                 BoardsRelationships bvm = new BoardsRelationships();
-                bvm.Id = Id;
                 bvm.ChildId = ChildId;
                 bvm.ParentId = ParentId;
                 Id = _model.Add(bvm);

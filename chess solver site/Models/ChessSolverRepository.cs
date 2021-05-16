@@ -40,7 +40,10 @@ namespace chess_solver_site.Models
             try
             {
                 ChessSolverEntity curEntity = GetByExpression(ent => ent.Id == updatedEntity.Id).FirstOrDefault();
-                _db.Entry(curEntity).CurrentValues.SetValues(updatedEntity);
+                if(curEntity != updatedEntity)
+                {
+                    _db.Entry(curEntity).CurrentValues.SetValues(updatedEntity);
+                }
 
                 if (_db.SaveChanges() == 1)
                 {

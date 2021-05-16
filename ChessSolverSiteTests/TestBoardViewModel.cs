@@ -1,6 +1,7 @@
 ﻿using System;
 using Xunit;
 using chess_solver_site.Models;
+using chess_solver_site;
 
 namespace ChessSolverSiteTests
 {
@@ -18,6 +19,17 @@ namespace ChessSolverSiteTests
             bm.IsFinished = false;
             bm.Add();
             Assert.True(bm.Id > 0);
+        }
+
+        [Fact]
+        public void Test_Update()
+        {
+            BoardViewModel bm = new BoardViewModel();
+            bm.Id = 1;
+            bm.GetById();
+            bm.TurnsSinceCapture = 30;
+
+            Assert.True(bm.Update() == Convert.ToInt16(UpdateStatus.Ok));
         }
         [Fact]
         public void Test_GetById()

@@ -12,9 +12,10 @@ namespace ChessSolverSiteTests
         public void Test_Add()
         {
             Boards newBoard = new Boards();
-            newBoard.BoardState = "Test";
+            newBoard.BoardState = "rhbqkbhr\npppppppp\nX#X#X#X#\nX#X#X#X#\n" +
+                "X#X#X#X#\nX#X#X#X#\nPPPPPPPP\nRHBQKBHR";
             newBoard.Turn = "BLACK";
-            newBoard.WinState = "TBD";
+            newBoard.WinState = "NA";
             newBoard.TurnsSinceCapture = 0;
 
             bm.Add(newBoard);
@@ -37,7 +38,7 @@ namespace ChessSolverSiteTests
         [Fact]
         public void Test_GetByBoardState()
         {
-            bm.GetByBoardState("Updated");
+            bm.GetByBoardState("Updated", "Black");
         }
         [Fact]
         public void Test_Delete()

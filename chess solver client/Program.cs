@@ -137,7 +137,7 @@ namespace chess_solver_client
             BoardViewModel bvm = new BoardViewModel();
             bvm.Id = b.Id;
             bvm.IsFinished = false;
-            bvm.WinState = "TBD";
+            bvm.WinState = "NA";
             if (CurBoard.Turn == Colour.BLACK)
             {
                 bvm.Turn = "BLACK";
@@ -153,11 +153,11 @@ namespace chess_solver_client
 
         static async Task<HttpResponseMessage> Submit(List<BoardViewModel> boards, List<BoardRelationshipViewModel> relationships)
         {
-            var payload = JsonConvert.SerializeObject(boards, Formatting.Indented);
+            var payload = JsonConvert.SerializeObject(new BoardPutRequest { Boards = boards, Relationships = relationships}, Formatting.Indented);
             var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
             if (IsVerbose)
             {
-                Console.WriteLine($"Uploading payload of size {payload.Length / 1000}kb to {ConnectionString}api/board");
+                Console.WriteLine($"Uploading {payload.Length / 1000}kb payload to {ConnectionString}api/board");
             }
 
             return await client.PostAsync(ConnectionString + "api/board", content);

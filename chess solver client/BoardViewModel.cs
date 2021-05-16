@@ -5,7 +5,7 @@ using System.Text;
 
 namespace chess_solver_client
 {
-    class BoardViewModel
+    public class BoardViewModel
     {
         [JsonProperty("Id")]
         public int Id { get; set; }
