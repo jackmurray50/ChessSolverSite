@@ -144,6 +144,7 @@ namespace chess_solver_site.Models
                         {
                             TurnsSinceCapture = temp.TurnsSinceCapture;
                         }
+                        this.IsFinished = true;
                         this.Id = temp.Id;
                         this.Update();
                     }
