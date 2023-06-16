@@ -1,8 +1,5 @@
 # ChessSolverSite
-ChessSolver is a website and client with a single (doomed) purpose: To brute-force chess, and solve it. There's an estimated 10<sup>120</sup> possible games, and 10<sup>50</sup> possible positions. While I started to create an application that calculates them, running it on a single computer simply isn't going to get it done with any reasonable amount of speed. So I started working on ChessSolverSite.
-
-Backend is finished
-Frontend is functional, though could use some updates.
+ChessSolver is a website and client with a single (doomed) purpose: To brute-force chess, and solve it. There's an estimated 10<sup>120</sup> possible games, and 10<sup>50</sup> possible positions. While I started to create an application that calculates them, running it on a single computer simply isn't going to get it done with any reasonable amount of speed. So I started working on ChessSolverSite to make it technically possible, though it's still practically impossible.
 
 ChessSolverSite contains 2 main parts: The server and the client. The server's purpose is to store board-states, represented as such:
 
